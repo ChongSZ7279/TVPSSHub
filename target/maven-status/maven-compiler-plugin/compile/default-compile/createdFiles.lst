@@ -8,6 +8,7 @@ com\example\dao\FeedbackDAO.class
 com\example\dao\SchoolDAO.class
 com\example\controller\SchoolController.class
 com\example\controller\ResourceController.class
+com\example\controller\HomeController.class
 com\example\controller\ActivityController.class
 com\example\model\School.class
 com\example\dao\ActivityDAO.class
