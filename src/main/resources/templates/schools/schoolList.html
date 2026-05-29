@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>School List</title>
+    <script
+      src="https://kit.fontawesome.com/af766576f4.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" th:href="@{/resources/css/general.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/activity.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/nav.css}" />
+    <style>
+      .action-icons a {
+        margin: 0 5px;
+        color: #333;
+        text-decoration: none;
+      }
+      .action-icons a:hover {
+        color: #007bff;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar inclusion -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="content">
+      <div class="header">
+        <h1>School List</h1>
+
+        <!-- Display button for Teacher -->
+        <div
+          th:if="${#authentication.authorities.![authority].contains('ROLE_2') 
+            or #authentication.authorities.![authority].contains('ROLE_3')}"
+        >
+          <button>
+            <a
+              th:href="@{/school/viewDetails/{id}(id=${#authentication.principal.schoolId})}"
+              >My School</a
+            >
+          </button>
+        </div>
+
+        <!-- Display button for Admin -->
+        <div
+          th:if="${#authentication.authorities.![authority].contains('ROLE_1')}"
+        >
+          <button>
+            <a th:href="@{/school/addSchool}">Add School</a>
+          </button>
+        </div>
+      </div>
+
+      <div class="container">
+        <!-- Functionalities Part -->
+        <div class="filters">
+          <div class="input-wrapper">
+            <input type="text" placeholder="School Name" />
+          </div>
+          <select>
+            <option value="all">All</option>
+            <option value="district">District</option>
+          </select>
+          <button>Filter</button>
+        </div>
+
+        <div class="feedback-container">
+          <table class="feedback-table">
+            <thead>
+              <tr>
+                <th>School Name</th>
+                <th>District</th>
+                <th>Representative</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Iterate over schools list and display each school details -->
+              <tr th:each="school : ${schools}">
+                <td th:text="${school.name}">School Name</td>
+                <td th:text="${school.district}">District</td>
+                <td th:text="${school.representative}">Representative</td>
+                <td class="action-icons">
+                  <!-- View button for all roles -->
+                  <a
+                    th:href="@{/school/viewDetails/{id}(id=${school.id})}"
+                    title="View Details"
+                  >
+                    <i class="fa-solid fa-eye"></i>
+                  </a>
+
+                  <!-- Admin Actions -->
+                  <div
+                    th:if="${#authentication.authorities.![authority].contains('ROLE_1')}"
+                    style="display: inline"
+                  >
+                    <a
+                      th:href="@{/school/editSchool/{id}(id=${school.id})}"
+                      title="Edit School"
+                    >
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    <a
+                      th:href="@{/school/deleteSchool/{id}(id=${school.id})}"
+                      onclick="return confirmDeleteSchool()"
+                      title="Delete School"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function confirmDeleteSchool() {
+        return confirm(
+          "Are you sure you want to delete this school? This action cannot be undone."
+        );
+      }
+    </script>
+  </body>
+</html>

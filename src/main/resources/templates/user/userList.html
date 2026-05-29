@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User List</title>
+<script src="https://kit.fontawesome.com/af766576f4.js"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/resources/css/general.css}">
+<link rel="stylesheet" th:href="@{/resources/css/activity.css}">
+<link rel="stylesheet" th:href="@{/resources/css/nav.css}">
+
+
+<script>
+        // Function for confirmation before deletion
+        function confirmDelete(event) {
+            var confirmAction = confirm("Are you sure you want to delete?");
+            if (!confirmAction) {
+                event.preventDefault(); // Prevents the form submission if "Cancel" is clicked
+            }
+        }
+    </script>
+</head>
+<body>
+	<!-- Include Navbar -->
+	<div th:insert="fragments/navbar :: navbar"></div>
+
+	<div class="content">
+		<!-- Header -->
+		<div class="header">
+			<h1>
+				User List for <span th:text="${schoolName}">School Name</span>
+			</h1>
+			<div th:if="${#authentication.authorities.![authority].contains('ROLE_2')}">
+				<button>
+					<a th:href="@{/user/createUser}">Add User</a>
+				</button>
+			</div>
+		</div>
+
+		<!-- User List Section -->
+		<form action="#" method="get">
+			<div class="filters">
+				<div class="input-wrapper">		
+					<label for="name">Name:</label>
+					<input type="text" id="name" name="name" placeholder="Enter name" th:value="${filterName}">
+				</div>
+				
+		<div class="input-wrapper">		
+			<label for="role">Role:</label><br>
+			<select id="role" name="role">
+				<option value="">--Select Role--</option>
+				<option value="2" th:selected="${filterRole == 2}">Teacher</option>
+				<option value="3" th:selected="${filterRole == 3}">Student</option>
+			</select>
+		</div>
+		
+			<button type="submit">Filter</button>
+			</div>
+		</form>
+		
+		<div class="feedback-container">
+			<div th:if="${not #lists.isEmpty(userList)}">
+				<table class="feedback-table">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Role</th>
+							<th>Email</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="user : ${userList}">
+							<td th:text="${user.fullName}">User Name</td>
+							<td th:text="${user.role == 1 ? 'Admin' : user.role == 2 ? 'Teacher' : user.role == 3 ? 'Student' : ''}">Role</td>
+							<td th:text="${user.email}">Email</td>
+							<td>
+								<div
+									th:if="${#authentication.authorities.![authority].contains('ROLE_2')}">
+									<a th:href="@{/user/editUser/{id}(id=${user.id})}"><i class="fa-solid fa-pen-to-square"></i></a>
+									<a onclick="confirmDelete(event)" th:href="@{/user/deleteUser/{id}(id=${user.id})}"><i class="fa-solid fa-trash"></i></a>								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- Pagination -->
+				<div class="pagination">
+					<!-- Previous Button -->
+					<div th:if="${currentPage > 1}">
+						<button th:onclick="'window.location.href=\'?page=' + (${currentPage} - 1) + '\''">
+							Previous
+						</button>
+					</div>
+				
+					<!-- Page Numbers -->
+					<button th:each="page : ${#numbers.sequence(1, totalPages)}"
+							th:classappend="${page == currentPage} ? 'active'"
+							th:onclick="'window.location.href=\'?page=' + (${currentPage}+1) + '\''"
+							th:text="${page}">1
+					</button>
+				
+					<!-- Next Button -->
+					<div th:if="${currentPage < totalPages}">
+						<button th:onclick="'window.location.href=\'?page=' + (${currentPage} + 1) + '\''">
+							Next
+						</button>
+					</div>
+				</div>
+				
+				
+			</div>
+
+			<!-- No Users Found -->
+			<div th:if="${#lists.isEmpty(userList)}">
+				<p>
+					No users found for <span th:text="${schoolName}">School Name</span>.
+				</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

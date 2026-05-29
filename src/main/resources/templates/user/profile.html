@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile</title>
+<script src="https://kit.fontawesome.com/af766576f4.js"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/resources/css/general.css}" />
+<link rel="stylesheet" th:href="@{/resources/css/activity.css}" />
+<link rel="stylesheet" th:href="@{/resources/css/profile.css}" />
+<link rel="stylesheet" th:href="@{/resources/css/nav.css}">
+
+</head>
+<body>
+	<!-- Include Navbar -->
+	<div th:insert="fragments/navbar :: navbar"></div>
+
+	<div class="content">
+		<!-- Header Section -->
+		<div class="header">
+			<h1>Profile</h1>
+			<button>
+				<a th:href="@{/user/updateProfile}">Update Profile</a>
+			</button>
+		</div>
+
+		<!-- Profile Container -->
+		<div class="profile-container">
+			<div class="profile-header">
+				<img th:src="@{/resources/images/profile-pic.png}"
+					alt="Profile Picture">
+				<h2 th:text="${client.fullName}"></h2>
+			</div>
+
+			<!-- Profile Info -->
+			<div class="profile-info">
+				<div class="profile-info-container">
+					<div class="info-item">
+						<label>Email:</label>
+						<div th:text="${client.email}"></div>
+					</div>
+					<div class="info-item">
+						<label>Identity Card Number:</label>
+						<div th:text="${client.identityCardNumber}"></div>
+					</div>
+
+					<!-- Conditional Display of School -->
+					<div class="info-item" th:if="${!#authentication.authorities.![authority].contains('ROLE_1')}">
+						<label>School:</label>
+						<div th:text="${client.school}"></div>
+					</div>
+
+					<!-- Role Information -->
+					<div class="info-item">
+						<label>Role:</label>
+						<div>
+							<span th:switch="${client.role}"> <span th:case="1">Admin</span>
+								<span th:case="2">Teacher</span> <span th:case="*">Student</span>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

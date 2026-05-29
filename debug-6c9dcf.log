@@ -1,0 +1,4 @@
+{"sessionId":"6c9dcf","runId":"post-fix","hypothesisId":"H4","location":"HibernateConfig","message":"sessionFactory build start","data":{"detail":"pre"},"timestamp":1780043392663}
+{"sessionId":"6c9dcf","runId":"post-fix","hypothesisId":"H4","location":"HibernateConfig","message":"sessionFactory build failed","data":{"detail":"SQLGrammarException:Table 'tvpsshub.feedback' doesn't exist in engine"},"timestamp":1780043393928}
+{"sessionId":"6c9dcf","runId":"post-fix","hypothesisId":"H4","location":"HibernateConfig","message":"sessionFactory build start","data":{"detail":"pre"},"timestamp":1780044370970}
+{"sessionId":"6c9dcf","runId":"post-fix","hypothesisId":"H4","location":"HibernateConfig","message":"sessionFactory build success","data":{"detail":"ok"},"timestamp":1780044372229}

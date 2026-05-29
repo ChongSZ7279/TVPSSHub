@@ -1,0 +1,138 @@
+<!-- templates/fragments/navbar.html -->
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sidebar Menu</title>
+    <script
+      src="https://kit.fontawesome.com/af766576f4.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" th:href="@{/resources/css/nav.css}" />
+  </head>
+  <body>
+    <div th:fragment="navbar">
+      <button class="sidebar-toggle">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <img
+            th:src="@{/resources/images/logo.png}"
+            alt="Ministry of Education"
+          />
+          <h1>Johor <span class="highlight">TVPSS</span></h1>
+        </div>
+
+        <ul class="menu">
+          <!-- Dashboard Link -->
+          <li>
+            <a th:href="@{/user/dashboard}">
+              <i class="fa-solid fa-gauge"></i> Dashboard
+            </a>
+          </li>
+
+          <!-- Admin Links -->
+          <div
+            th:if="${#authentication.authorities.![authority].contains('ROLE_1')}"
+          >
+            <li>
+              <a th:href="@{/activity/activityList}">
+                <i class="fa-solid fa-calendar-days"></i> Programs
+              </a>
+            </li>
+            <li>
+              <a th:href="@{/school/list}">
+                <i class="fa-solid fa-school"></i> School List
+              </a>
+            </li>
+            <li>
+              <a th:href="@{/resource/list}">
+                <i class="fa-solid fa-book"></i> Resources
+              </a>
+            </li>
+            <li>
+              <a th:href="@{/user/profile}">
+                <i class="fa-solid fa-user"></i> Profile
+              </a>
+            </li>
+          </div>
+
+          <!-- Teacher Links -->
+          <div
+            th:if="${#authentication.authorities.![authority].contains('ROLE_2')}"
+          >
+            <li>
+              <a th:href="@{/activity/activityList}">
+                <i class="fa-solid fa-calendar-days"></i> Programs
+              </a>
+            </li>
+            <li>
+              <a th:href="@{/school/list}">
+                <i class="fa-solid fa-school"></i> School List
+              </a>
+            </li>
+            <li>
+              <a th:href="@{/resource/list}">
+                <i class="fa-solid fa-book"></i> Resources
+              </a>
+            </li>
+            <li>
+              <a th:href="@{/user/userList}">
+                <i class="fa-solid fa-users"></i> User List
+              </a>
+            </li>
+          </div>
+
+          <!-- Student Links -->
+          <div
+            th:if="${#authentication.authorities.![authority].contains('ROLE_3')}"
+          >
+            <li>
+              <a th:href="@{/activity/activityList}">
+                <i class="fa-solid fa-calendar-days"></i> Programs
+              </a>
+            </li>
+            <li>
+              <a th:href="@{/school/list}">
+                <i class="fa-solid fa-school"></i> School List
+              </a>
+            </li>
+            <li>
+              <a th:href="@{/resource/list}">
+                <i class="fa-solid fa-book"></i> Resources
+              </a>
+            </li>
+            <li>
+              <a th:href="@{/user/profile}">
+                <i class="fa-solid fa-user"></i> Profile
+              </a>
+            </li>
+          </div>
+        </ul>
+
+        <div class="logout">
+          <a th:href="@{/user/logout}">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </a>
+        </div>
+      </div>
+
+      <script>
+        const sidebarToggle = document.querySelector(".sidebar-toggle");
+        const sidebar = document.querySelector(".sidebar");
+
+        sidebarToggle.addEventListener("click", () => {
+          sidebar.classList.toggle("open");
+          sidebarToggle.classList.toggle("toggled");
+        });
+      </script>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Resource Details</title>
+<script src="https://kit.fontawesome.com/af766576f4.js"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/resources/css/general.css}">
+<link rel="stylesheet" th:href="@{/resources/css/activity.css}">
+<link rel="stylesheet" th:href="@{/resources/css/nav.css}">
+</head>
+<body>
+	<!-- Navbar inclusion -->
+	<div th:replace="fragments/navbar :: navbar"></div>
+
+	<div class="content">
+		<div class="header">
+			<div class="back">
+				<a href="javascript:history.back()"><i
+					class="fa-solid fa-angle-left">Back</i></a>
+				<h2>Resource Details</h2>
+			</div>
+		</div>
+
+		<div class="form-container">
+			<section class="info-section">
+				<div class="detail-group">
+					<label>Request:</label>
+					<p th:text="${resource.request}"></p>
+				</div>
+				<div class="detail-group">
+					<label>Type:</label>
+					<p th:text="${resource.type}"></p>
+				</div>
+				<div class="detail-group">
+					<label>Description:</label>
+					<p th:text="${resource.description}"></p>
+				</div>
+				<div class="detail-group">
+					<label>State:</label>
+					<p th:text="${resource.state}"></p>
+				</div>
+				<div class="detail-group">
+					<label>Updated Date:</label>
+					<p th:text="${resource.updatedDate}"></p>
+				</div>
+				<div class="detail-group">
+					<label>Reply:</label>
+					<p th:text="${resource.reply}"></p>
+				</div>
+			</section>
+		</div>
+	</div>
+</body>
+</html>

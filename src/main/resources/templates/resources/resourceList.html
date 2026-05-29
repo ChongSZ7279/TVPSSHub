@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resources</title>
+    <script
+      src="https://kit.fontawesome.com/af766576f4.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" th:href="@{/resources/css/general.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/activity.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/nav.css}" />
+  </head>
+  <body>
+    <!-- Navbar inclusion -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="content">
+      <div class="header">
+        <h1>Resources</h1>
+        <div class="button">
+          <div
+            th:if="${#authentication.authorities.![authority].contains('ROLE_2') or #authentication.authorities.![authority].contains('ROLE_3')}"
+          >
+            <a th:href="@{/resource/addResource}">
+              <button type="button">Request Resource</button>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <!-- Functionalities Part -->
+        <div class="filters">
+          <form
+            th:action="@{/resource/filter}"
+            method="GET"
+            style="display: flex; gap: 1rem; align-items: center"
+          >
+            <div class="input-wrapper">
+              <input
+                type="text"
+                name="searchText"
+                placeholder="Search..."
+                style="padding: 0.5rem"
+              />
+            </div>
+            <select name="state" style="padding: 0.5rem">
+              <option value="">All</option>
+              <option value="Pending">Pending</option>
+              <option value="Rejected">Rejected</option>
+              <option value="Approved">Approved</option>
+            </select>
+            <button type="submit" style="padding: 0.5rem 1rem">Filter</button>
+          </form>
+        </div>
+
+        <div class="feedback-container">
+          <table class="feedback-table">
+            <thead>
+              <tr>
+                <th>Request</th>
+                <th>School</th>
+                <th>State</th>
+                <th>Updated Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="resource : ${resources}">
+                <td th:text="${resource.request}"></td>
+                <td th:text="${resource.school}"></td>
+                <td th:text="${resource.state}"></td>
+                <td th:text="${resource.updatedDate}"></td>
+                <td>
+                  <a
+                    th:href="@{/resource/editResource/{id}(id=${resource.id})}"
+                    th:if="${(#authentication.authorities.![authority].contains('ROLE_2') or 
+                  #authentication.authorities.![authority].contains('ROLE_3')) and 
+                  resource.state != 'Approved' and 
+                  resource.school == userSchool}"
+                    >Edit |
+                  </a>
+                  <a
+                    th:href="@{/resource/deleteResource/{id}(id=${resource.id})}"
+                    th:if="${(#authentication.authorities.![authority].contains('ROLE_2') or 
+                             #authentication.authorities.![authority].contains('ROLE_3')) and 
+                             resource.state != 'Approved' and 
+                             resource.school == userSchool}"
+                    th:onclick="|return confirm('Are you sure?')|"
+                    >Delete |
+                  </a>
+                  <a th:href="@{/resource/viewDetails/{id}(id=${resource.id})}"
+                    >View Details</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

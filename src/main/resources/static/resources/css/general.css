@@ -1,0 +1,83 @@
+@charset "UTF-8";
+
+body {
+	font-family: 'Arial', sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #eef4fb;
+	display: flex;
+	flex-direction: row;
+}
+.content {
+margin-left: calc(20rem - 2rem); /* Adjust based on sidebar width */
+  transition: margin-left 0.3s ease;
+  width: 100%; /* Allow content to expand fully */
+    max-width: none; /* Remove any maximum width */
+}
+
+.error-message p{
+    color: #ff0000;
+    font-weight: bold; /* Optional, for emphasis */
+}
+
+.header {
+	display: flex;
+	justify-content: space-between; /* Aligns the title and button */
+	align-items: center; /* Vertically aligns content */
+	padding: 20px;
+}
+
+.header h1 {
+	margin: 0;
+	font-size: 1.8rem;
+	color: #333;
+}
+
+.header h2 {
+	margin: 1rem;
+	font-size: 1.5rem;
+	color: #333;
+}
+
+.header button {
+	background-color: #4318FF; /* Custom purple tone */
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	font-size: 1rem;
+	cursor: pointer;
+	border-radius: 6px; /* Rounded edges */
+	transition: background-color 0.3s ease;
+}
+
+.header button:hover {
+	background-color: #2e13b7; /* Darker purple for hover */
+}
+
+.header button a {
+	color: white;
+	text-decoration: none;
+}
+
+.header .back a {
+	color: #2e13b7;
+}
+
+.header img{
+	width: 8rem;
+	height: 8rem;
+	border-radius: 50%;
+	margin-right: 2rem;
+}
+
+.container {
+	padding: 20px;
+}
+
+@media screen and (max-width: 810px) {
+	.header .button {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+	}
+}

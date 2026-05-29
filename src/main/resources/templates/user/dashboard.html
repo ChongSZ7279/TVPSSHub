@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+<script src="https://kit.fontawesome.com/af766576f4.js"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/resources/css/general.css}">
+<link rel="stylesheet" th:href="@{/resources/css/activity.css}">
+<link rel="stylesheet" th:href="@{/resources/css/nav.css}">
+
+</head>
+<body>
+	<div th:insert="fragments/navbar :: navbar"></div>
+
+	<div class="content">
+		<!-- Header Section -->
+		<div class="header">
+			<div>
+				<img th:src="@{/resources/images/profile-pic.png}"
+					th:alt="${client.fullName}">
+				<h1>
+					Welcome Back, <span th:text="${client.fullName}">User</span>!
+				</h1>
+			</div>
+		</div>
+
+		<!-- Ongoing Programs Section -->
+		<div class="container">
+			<h2>Ongoing Programs</h2>
+			<div class="programs">
+				<div th:each="activity : ${programs}">
+					<div class="program-card">
+						<img th:src="@{/resources/images/activity.png}"
+							alt="[[${activity.title}]]">
+						<div class="details">
+							<h3>[[${activity.title}]]</h3>
+							<p>Status: [[${activity.status}]]</p>
+							<p>[[${activity.date}]]</p>
+							<div class="center-btn">
+								<a
+									th:href="@{/activity/activityDetails/{id}(id=${activity.id})}"
+									class="view-btn">View</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- School List Section -->
+		<div class="container">
+			<h2>School List</h2>
+			<div class="programs">
+				<div th:each="school : ${schools}">
+					<div class="program-card">
+						<img th:src="@{/resources/images/activity.png}"
+							alt="[[${school.name}]]">
+						<div class="details">
+							<h3 th:text="${school.name}">School Name</h3>
+							<p th:text="${school.district}">District</p>
+							<p th:text="${school.representative}">Representative</p>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- Resource Request Section -->
+		<div class="container">
+			<h2>Resource Request</h2>
+			<div class="programs">
+				<div th:each="resource : ${resources}">
+				<div class="resource-card" >
+										<div class="details">
+				
+					<h3 th:text="${resource.request}">Request</h3>
+					<p>
+						Type: <span th:text="${resource.type}">Type</span>
+					</p>
+					<p>
+						Availability: <span th:text="${resource.description}">Description</span>
+					</p>
+					</div>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

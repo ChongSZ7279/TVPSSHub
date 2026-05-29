@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Programs</title>
+    <script
+      src="https://kit.fontawesome.com/af766576f4.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" th:href="@{/resources/css/general.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/activity.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/nav.css}" />
+  </head>
+  <body>
+    <div>
+      <div th:insert="fragments/navbar :: navbar"></div>
+    </div>
+    <div class="content">
+      <div class="header">
+        <h1>Programs</h1>
+        <div class="button">
+          <!-- Only teachers can add activities -->
+          <div
+            th:if="${#authentication.authorities.![authority].contains('ROLE_2')}"
+          >
+            <a th:href="@{/activity/addActivity}">
+              <button type="button">Add Program</button>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <form action="/TVPSSHub/activity/filterActivities" method="get">
+          <div class="filters">
+            <div class="input-wrapper">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input
+                type="text"
+                name="searchKeyword"
+                placeholder="Organization Name / Activity Name"
+              />
+            </div>
+            <div>
+              <select name="location">
+                <option value="">All</option>
+                <option value="Batu Pahat">Batu Pahat</option>
+                <option value="Johor Bahru">Johor Bahru</option>
+                <option value="Kluang">Kluang</option>
+                <option value="Kota Tinggi">Kota Tinggi</option>
+                <option value="Kulai">Kulai</option>
+                <option value="Mersing">Mersing</option>
+                <option value="Muar">Muar</option>
+                <option value="Pontian">Pontian</option>
+                <option value="Segamat">Segamat</option>
+                <option value="Tangkak">Tangkak</option>
+              </select>
+            </div>
+
+            <div>
+              <button type="submit">Filter</button>
+            </div>
+          </div>
+        </form>
+
+        <div th:if="${#lists.isEmpty(activities)}">
+          <p>No activities available.</p>
+        </div>
+
+        <div class="programs">
+          <!-- Loop through activities and display program cards -->
+          <div th:each="activity : ${activities}">
+            <div class="program-card">
+              <img
+                th:src="@{/resources/images/activity.png}"
+                alt="[[${activity.title}]]"
+              />
+              <div class="details">
+                <h3>[[${activity.title}]]</h3>
+                <p>Status: [[${activity.status}]]</p>
+                <p>[[${activity.date}]]</p>
+                <div class="center-btn">
+                  <a
+                    th:href="@{/activity/activityDetails/{id}(id=${activity.id})}"
+                    class="view-btn"
+                    >View</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit School</title>
+    <script
+      src="https://kit.fontawesome.com/af766576f4.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" th:href="@{/resources/css/general.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/activity.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/nav.css}" />
+  </head>
+  <body>
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="content">
+      <div class="header">
+        <div class="back">
+          <a href="javascript:history.back()">
+            <i class="fa-solid fa-angle-left">Back</i>
+          </a>
+          <h2>Edit School</h2>
+        </div>
+      </div>
+
+      <div class="form-container">
+        <form
+          method="post"
+          th:action="@{/school/editSchool}"
+          onsubmit="return confirmEditSchool()"
+        >
+          <input type="hidden" name="id" th:value="${school.id}" />
+          <section class="info-section">
+            <div class="form-group">
+              <label>School Name:</label>
+              <input
+                type="text"
+                name="name"
+                th:value="${school.name}"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label>School Code:</label>
+              <input
+                type="text"
+                name="code"
+                th:value="${school.code}"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label>District:</label>
+              <input
+                type="text"
+                name="district"
+                th:value="${school.district}"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Representative:</label>
+              <input
+                type="text"
+                name="representative"
+                th:value="${school.representative}"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Address:</label>
+              <input
+                type="text"
+                name="address"
+                th:value="${school.address}"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label>City:</label>
+              <input
+                type="text"
+                name="city"
+                th:value="${school.city}"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label>State:</label>
+              <input
+                type="text"
+                name="state"
+                th:value="${school.state}"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Postcode:</label>
+              <input
+                type="text"
+                name="postcode"
+                th:value="${school.postcode}"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Phone:</label>
+              <input
+                type="text"
+                name="phone"
+                th:value="${school.phone}"
+                required
+              />
+            </div>
+
+            <div class="checkbox-section">
+              <h3>School Facilities</h3>
+              <div class="checkbox-grid">
+                <div class="checkbox-wrapper">
+                  <input
+                    type="checkbox"
+                    id="studio"
+                    name="studio"
+                    th:checked="${school.studio}"
+                  />
+                  <label for="studio">Studio Available</label>
+                </div>
+
+                <div class="checkbox-wrapper">
+                  <input
+                    type="checkbox"
+                    id="schoolRecording"
+                    name="schoolRecording"
+                    th:checked="${school.schoolRecording}"
+                  />
+                  <label for="schoolRecording">School Recording</label>
+                </div>
+
+                <div class="checkbox-wrapper">
+                  <input
+                    type="checkbox"
+                    id="uploadYoutube"
+                    name="uploadYoutube"
+                    th:checked="${school.uploadYoutube}"
+                  />
+                  <label for="uploadYoutube">Upload to YouTube</label>
+                </div>
+
+                <div class="checkbox-wrapper">
+                  <input
+                    type="checkbox"
+                    id="recording"
+                    name="recording"
+                    th:checked="${school.recording}"
+                  />
+                  <label for="recording">Recording Capability</label>
+                </div>
+
+                <div class="checkbox-wrapper">
+                  <input
+                    type="checkbox"
+                    id="collaborate"
+                    name="collaborate"
+                    th:checked="${school.collaborate}"
+                  />
+                  <label for="collaborate">Collaboration</label>
+                </div>
+
+                <div class="checkbox-wrapper">
+                  <input
+                    type="checkbox"
+                    id="greenscreen"
+                    name="greenscreen"
+                    th:checked="${school.greenscreen}"
+                  />
+                  <label for="greenscreen">Green Screen</label>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit">Update School</button>
+          </section>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      function confirmEditSchool() {
+        return confirm("Are you sure you want to update this school?");
+      }
+    </script>
+
+    <style>
+      .checkbox-section {
+        margin: 20px 0;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .checkbox-section h3 {
+        margin-bottom: 15px;
+        color: #333;
+      }
+
+      .checkbox-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+      }
+
+      .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .checkbox-wrapper input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+      }
+
+      .checkbox-wrapper label {
+        cursor: pointer;
+        font-size: 14px;
+        color: #444;
+      }
+
+      .checkbox-wrapper:hover label {
+        color: #000;
+      }
+    </style>
+  </body>
+</html>

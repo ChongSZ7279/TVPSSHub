@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Create Resource</title>
+<script src="https://kit.fontawesome.com/af766576f4.js"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/resources/css/general.css}">
+<link rel="stylesheet" th:href="@{/resources/css/activity.css}">
+<link rel="stylesheet" th:href="@{/resources/css/nav.css}">
+</head>
+<body>
+	<!-- Navbar inclusion -->
+	<div th:replace="fragments/navbar :: navbar"></div>
+
+	<div class="content">
+		<div class="header">
+			<div class="back">
+				<a href="javascript:history.back()"><i
+					class="fa-solid fa-angle-left">Back</i></a>
+				<h2>Create New Resource</h2>
+			</div>
+		</div>
+
+		<div class="form-container">
+			<form action="#" th:action="@{/resource/addResource}" method="post">
+				<input type="hidden" id="id" name="id" value="0" />
+				<section class="info-section">
+					<div class="form-group">
+						<label for="request">Request:</label> <input type="text"
+							id="request" name="request" placeholder="Enter Request" required />
+					</div>
+
+					<div class="form-group">
+						<label for="type">Type:</label> <input type="text" id="type"
+							name="type" placeholder="Enter Type" required /> <label
+							for="description">Description:</label>
+						<textarea id="description" name="description"
+							placeholder="Enter Description" required></textarea>
+					</div>
+
+				</section>
+				<button type="submit">Create Resource</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

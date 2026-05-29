@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Programs</title>
+    <script
+      src="https://kit.fontawesome.com/af766576f4.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" th:href="@{/resources/css/general.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/activity.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/nav.css}" />
+  </head>
+  <body>
+    <div>
+      <div th:insert="fragments/navbar :: navbar"></div>
+    </div>
+    <div class="content">
+      <div class="header">
+        <div>
+          <a th:href="@{/activity/activityList}"
+            ><i class="fa-solid fa-angle-left">Back</i></a
+          >
+          <h2>Activity Details</h2>
+        </div>
+        <div class="button">
+          <!-- Admin buttons -->
+          <div
+            th:if="${#authentication.authorities.![authority].contains('ROLE_1')}"
+          >
+            <button>
+              <a th:href="@{/activity/showFeedback/{id}(id=${activity.id})}"
+                >View Feedback</a
+              >
+            </button>
+            <button>
+              <a th:href="@{/activity/addFeedback(activityId=${activity.id})}"
+                >Add Feedback</a
+              >
+            </button>
+          </div>
+
+          <!-- Teacher buttons -->
+          <div
+            th:if="${#authentication.authorities.![authority].contains('ROLE_2') 
+            and activity.creatorId == #authentication.principal.id}"
+          >
+            <button>
+              <a th:href="@{/activity/showFeedback/{id}(id=${activity.id})}"
+                >View Feedback</a
+              >
+            </button>
+            <button onclick="savePage()">Generate Documentation</button>
+            <button>
+              <a th:href="@{/activity/editActivity/{id}(id=${activity.id})}"
+                >Edit Program</a
+              >
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-container">
+        <!-- Main Title Section -->
+        <div class="header-section">
+          <img
+            th:src="@{/resources/images/activity.png}"
+            alt="Activity Image"
+          />
+          <div class="header-text">
+            <h1 th:text="${activity.title}"></h1>
+            <p>
+              <span th:text="${activity.district}"></span>
+            </p>
+            <p th:text="${activity.date}"></p>
+          </div>
+        </div>
+
+        <!-- Event Information Section -->
+        <div class="info-section">
+          <h2>Informations</h2>
+          <div class="table">
+            <table>
+              <tr>
+                <td>
+                  <span><strong>Title</strong></span>
+                </td>
+                <td>:</td>
+                <td><span th:text="${activity.title}"></span></td>
+              </tr>
+              <tr>
+                <td>
+                  <span><strong>District</strong></span>
+                </td>
+                <td>:</td>
+                <td><span th:text="${activity.district}"></span></td>
+              </tr>
+              <tr>
+                <td>
+                  <span><strong>Organizer</strong></span>
+                </td>
+                <td>:</td>
+                <td><span th:text="${activity.organizer}"></span></td>
+              </tr>
+              <tr>
+                <td>
+                  <span><strong>Target Language</strong></span>
+                </td>
+                <td>:</td>
+                <td><span th:text="${activity.targetLanguage}"></span></td>
+              </tr>
+            </table>
+            <table>
+              <tr>
+                <td>
+                  <span><strong>Date</strong></span>
+                </td>
+                <td>:</td>
+                <td><span th:text="${activity.date}"></span></td>
+              </tr>
+              <tr>
+                <td>
+                  <span><strong>Competition Level</strong></span>
+                </td>
+                <td>:</td>
+                <td><span th:text="${activity.competitionLevel}"></span></td>
+              </tr>
+              <tr>
+                <td>
+                  <span><strong>Venue</strong></span>
+                </td>
+                <td>:</td>
+                <td><span th:text="${activity.venue}"></span></td>
+              </tr>
+              <tr>
+                <td>
+                  <span><strong>Program Duration</strong></span>
+                </td>
+                <td>:</td>
+                <td><span th:text="${activity.programDuration}"></span></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- Participants Section -->
+        <div class="participants-section">
+          <h2>Participants</h2>
+          <table>
+            <tr>
+              <td><strong>Number of Participants: </strong></td>
+              <td><strong>a) </strong></td>
+              <td><strong>Primary School</strong></td>
+              <td>:</td>
+              <td th:text="${activity.participantsPrimary}"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><strong>b) </strong></td>
+              <td><strong>Secondary School</strong></td>
+              <td>:</td>
+              <td th:text="${activity.participantsSecondary}"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><strong>c) </strong></td>
+              <td><strong>Open</strong></td>
+              <td>:</td>
+              <td th:text="${activity.participantsOpen}"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td><strong>Total</strong></td>
+              <td>:</td>
+              <td
+                th:text="${activity.participantsPrimary + activity.participantsSecondary + activity.participantsOpen}"
+              ></td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Description Section -->
+        <div class="description-section">
+          <h2>Description</h2>
+          <p th:text="${activity.description}"></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+      async function savePage() {
+        const { jsPDF } = window.jspdf;
+
+        // Create a new jsPDF instance
+        const pdf = new jsPDF();
+
+        // Capture the page content using html2canvas
+        const content = document.querySelector(".detail-container");
+        const canvas = await html2canvas(content, {
+          scale: 2,
+        });
+
+        // Convert the canvas to an image and add it to the PDF
+        const imgData = canvas.toDataURL("image/png");
+        const imgWidth = 210;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+
+        pdf.save("Activity_Details.pdf");
+      }
+    </script>
+  </body>
+</html>

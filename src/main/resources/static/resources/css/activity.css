@@ -1,0 +1,499 @@
+.container {
+	padding: 20px;
+}
+/* Filter Section */
+.filters {
+	display: flex;
+	flex-wrap: wrap; /* Allow items to wrap if space is insufficient */
+	justify-content: center; /* Center the items */
+	align-items: center; /* Align items vertically */
+	gap: 1.5rem; /* Increased space between items */
+	margin-bottom: 40px; /* Space below filter section */
+}
+
+.filters .input-wrapper {
+	position: relative;
+	width: 100%; /* Full width */
+	max-width: 400px; /* Max width for large screens */
+}
+
+.filters .input-wrapper input {
+	width: 100%;
+	padding: 12px 45px 12px 15px;
+	/* Added padding for better space around text */
+	font-size: 1rem;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	transition: border-color 0.3s, box-shadow 0.3s;
+	/* Smooth transition for focus */
+}
+
+.filters .input-wrapper input:focus {
+	outline: none;
+	border-color: #4318FF; /* Focus border color */
+	box-shadow: 0 0 5px rgba(67, 24, 255, 0.4); /* Soft glow on focus */
+}
+
+.filters .input-wrapper .search-icon {
+	position: absolute;
+	top: 50%; /* Center vertically */
+	right: 15px; /* Position it inside the input */
+	transform: translateY(-50%); /* Perfect vertical alignment */
+	font-size: 1.2rem;
+	color: #888;
+	pointer-events: none; /* Prevent interaction with the icon */
+}
+
+.filters select {
+	width: 200px;
+	padding: 12px;
+	font-size: 1rem;
+	border-radius: 6px;
+	border: 1px solid #ddd;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	transition: all 0.3s ease;
+}
+
+.filters select:focus {
+	outline: none;
+	border-color: #4318FF;
+	box-shadow: 0 0 5px rgba(67, 24, 255, 0.5);
+}
+
+.filters button {
+	background-color: #4318FF;
+	color: white;
+	border: none;
+	font-size: 1rem;
+	cursor: pointer;
+	padding: 12px 24px;
+	border-radius: 6px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	transition: background-color 0.3s ease, transform 0.2s ease;
+	width: 100%; /* Button width for consistency */
+	max-width: 150px; /* Max width for buttons */
+}
+
+.filters button:hover {
+	background-color: #2e13b7; /* Darken on hover */
+	transform: translateY(-2px); /* Slight hover effect */
+}
+
+.filters button:active {
+	transform: translateY(1px); /* Small press effect */
+}
+
+.programs {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.program-card {
+	background: white;
+	border-radius: 12px; /* Smooth corners */
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	width: 350px;
+	height: 400px;
+	margin-bottom: 50px;
+}
+.resource-card {
+	background: white;
+	border-radius: 12px; /* Smooth corners */
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	width: 350px;
+	height: 200px;
+	margin-bottom: 50px;
+}
+
+
+.program-card:hover {
+	transform: translateY(-5px); /* Slight upward hover */
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+}
+
+.program-card img {
+	margin: 1rem;
+	width: 320px;
+	height: 180px; /* Uniform height */
+	object-fit: cover; /* Maintains aspect ratio */
+}
+
+.program-card .details, .resource-card .details {
+	padding: 15px;
+}
+
+.program-card .details h3, .resource-card .details h3 {
+	font-size: 1.3rem;
+	margin: 0 0 10px;
+	color: #333; /* Darker text */
+}
+
+.program-card .details p, .resource-card .details p {
+	margin: 0 0 5px;
+	color: #666; /* Subtle text color */
+}
+
+.program-card .details .center-btn {
+	text-align: center;
+}
+
+.program-card .details .view-btn {
+	display: inline-block;
+	padding: 10px 20px;
+	margin-top: 10px;
+	background-color: #4318FF;
+	color: white;
+	text-align: center;
+	border-radius: 6px;
+	text-decoration: none;
+	font-weight: bold;
+	transition: background-color 0.3s ease;
+}
+
+.program-card .details .view-btn:hover {
+	background-color: #2e13b7;
+}
+
+.form-container {
+	max-width: 800px; /* Width of the form container */
+	margin: 50px auto; /* Center align the form */
+	background-color: white;
+	padding: 30px;
+	border-radius: 12px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/*Activity details*/
+.detail-container {
+	background-color: white;
+	border-radius: 12px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	padding: 20px 40px; /* Adjusted for inner spacing */
+	margin: 40px auto; /* Center alignment */
+	max-width: 800px;
+	overflow: hidden;
+}
+
+/* Header Section */
+.header-section {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+}
+
+.header-section img {
+	border-radius: 10px;
+}
+
+.header-text {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.header-text h1 {
+	font-size: 2rem;
+	color: #333;
+	margin-bottom: 10px;
+}
+
+.header-text span {
+	background-color: #eef4fb;
+	border-radius: 10px;
+	padding: 8px;
+}
+
+.header-text p {
+	font-size: 1.1rem;
+	color: #666;
+	margin: 5px 0;
+}
+
+/* Information Section */
+.info-section, .participants-section, .description-section {
+	margin-bottom: 30px;
+}
+
+.info-section .table {
+	display: flex;
+	flex-direction: row;
+}
+
+.info-section h2, .participants-section h2, .description-section h2 {
+	font-size: 1.6rem;
+	color: #4318FF;
+	border-bottom: 2px solid #4318FF;
+	padding-bottom: 5px;
+	margin-bottom: 15px;
+}
+
+.info-section td, .participants-section td {
+	padding: 8px;
+}
+
+.info-section strong {
+	padding: 10px;
+}
+
+.description-section p {
+	font-size: 1.1rem;
+	color: #666;
+	line-height: 1.8;
+}
+
+.form-group {
+	margin-bottom: 20px; /* Space between inputs */
+}
+
+.form-group label {
+	font-size: 1.1rem; /* Larger labels for better visibility */
+	font-weight: bold;
+	margin-bottom: 5px;
+	display: block;
+	color: #333;
+}
+
+.form-group input, .form-group textarea, .form-group select {
+	width: 100%; /* Full width inputs */
+	padding: 12px; /* Larger padding for a modern look */
+	font-size: 1rem;
+	border: 1px solid #ddd; /* Subtle border */
+	border-radius: 8px; /* Rounded corners */
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Inner shadow */
+}
+
+.file-upload {
+	text-align: center;
+	padding: 20px;
+	border: 2px dashed #a9c0de;
+	border-radius: 8px; /* Rounded corners for upload box */
+	background-color: #f7faff;
+	margin-bottom: 20px;
+	transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.file-upload:hover {
+	border-color: #4318FF; /* Purple hover border */
+	background-color: #eef4fb;
+}
+
+.file-upload label {
+	font-size: 1rem;
+	font-weight: bold;
+	color: #555;
+	display: block;
+	margin-bottom: 10px;
+}
+
+.form-container {
+	max-width: 800px; /* Limit the form's width */
+	margin: 30px auto; /* Center the form on the page */
+	background-color: #fff; /* White background for contrast */
+	padding: 30px; /* Add inner spacing */
+	border-radius: 12px; /* Smooth rounded corners */
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+	font-family: Arial, sans-serif;
+	box-sizing: border-box;
+	overflow: hidde,;
+}
+
+.form-container label {
+	display: block;
+	margin-bottom: 10px; /* Add spacing between label and input */
+	font-weight: bold; /* Highlight labels */
+	color: #333; /* Dark text for readability */
+}
+
+.form-container textarea {
+	width: 100%; /* Full width for the input */
+	padding: 10px; /* Inner spacing for comfort */
+	border: 1px solid #ccc; /* Light border for structure */
+	border-radius: 6px; /* Rounded corners */
+	font-size: 1rem; /* Larger text for readability */
+	resize: none; /* Prevent resizing for consistent layout */
+	transition: border-color 0.3s ease;
+}
+
+input, textarea, select, button {
+	box-sizing: border-box; /* Apply box-sizing to form elements as well */
+}
+
+.form-container textarea:focus {
+	border-color: #4318FF; /* Highlight border on focus */
+	outline: none; /* Remove default outline */
+	box-shadow: 0 0 5px rgba(67, 24, 255, 0.4); /* Add subtle glow */
+}
+
+.form-container button {
+	width: 100%;
+	padding: 15px;
+	background-color: #4318FF;
+	color: white;
+	font-size: 1rem;
+	font-weight: bold;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.form-container button:hover {
+	background-color: #2e13b7;
+	transform: scale(1.02); /* Subtle zoom effect on hover */
+}
+
+.form-container button:active {
+	transform: scale(0.98); /* Slight press effect on click */
+}
+
+.form-container div {
+	margin-bottom: 20px; /* Space out form elements */
+}
+
+.feedback-container {
+	display: flex;
+	flex-direction: column; /* Stack content vertically */
+	justify-content: space-between;
+	/* Ensure pagination stays at the bottom */
+	max-width: 100%;
+	height: 500px; /* Fixed height for consistent size */
+	margin: 0 auto;
+	background-color: white;
+	border-radius: 12px;
+	padding: 20px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	font-family: 'Arial', sans-serif;
+	overflow-x: auto; /* Allow horizontal scrolling for small screens */
+}
+
+.feedback-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+	font-size: 0.85rem;
+	overflow-y: auto;
+	/* Enable vertical scrolling if content exceeds container height */
+}
+
+.feedback-table th, .feedback-table td {
+	text-align: left;
+	padding: 8px;
+	border-bottom: 1px solid #ddd;
+}
+
+.feedback-table thead {
+	background-color: #eef4fb;
+}
+
+.feedback-table th {
+	color: #333;
+	font-weight: bold;
+}
+
+.feedback-table td {
+	color: #666;
+}
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	margin-top: auto; /* Push pagination to the bottom of the container */
+}
+
+.pagination button {
+	padding: 8px 12px;
+	font-size: 0.85rem;
+	background-color: white;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.pagination button.active {
+	background-color: #4318FF;
+	color: white;
+	border-color: #4318FF;
+}
+
+.pagination button:hover {
+	background-color: #eef4fb;
+}
+
+@media ( max-width : 1040px) {
+	.filters {
+		display: flex;
+		flex-direction: row;
+		gap: 2rem; /* Space between items */
+		justify-content: center;
+		align-items: center; /* Vertically align items */
+		margin-bottom: 40px;
+	}
+	.filters .input-wrapper {
+		width: 400px;
+	}
+	.programs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2rem;
+		justify-content: center;
+		align-items: center;
+	}
+}
+
+@media ( max-width : 1024px) {
+	.header-section {
+		flex-direction: column;
+		text-align: center;
+	}
+	.info-section .table {
+		flex-direction: column;
+	}
+	.info-section td:nth-child(odd) {
+		width: 300px;
+	}
+}
+
+@media ( max-width : 780px) {
+	.program-card {
+		width: 300px;
+		height: 350px;
+		margin-bottom: 30px;
+	}
+	.program-card:hover {
+		transform: translateY(-5px); /* Slight upward hover */
+		box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+	}
+	.program-card img {
+		margin: 0.6rem;
+		width: 280px;
+		height: 150px; /* Uniform height */
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.feedback-table th, .feedback-table td {
+		font-size: 0.75rem;
+		padding: 6px;
+	}
+	.pagination button {
+		font-size: 0.75rem;
+		padding: 6px 8px;
+	}
+	.detail-container {
+		padding: 20px;
+	}
+	.header-text h1 {
+		font-size: 1.8rem;
+	}
+}

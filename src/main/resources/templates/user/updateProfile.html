@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Update Profile</title>
+<script src="https://kit.fontawesome.com/af766576f4.js"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/resources/css/general.css}" />
+<link rel="stylesheet" th:href="@{/resources/css/activity.css}" />
+<link rel="stylesheet" th:href="@{/resources/css/profile.css}" />
+<link rel="stylesheet" th:href="@{/resources/css/nav.css}">
+
+
+<script>
+        function confirmUpdate() {
+            return confirm("Are you sure you want to edit your profile?");
+        }
+		document.addEventListener('DOMContentLoaded', function() {
+			const schoolInput = document.getElementById("school-input");
+			const hiddenSchoolInput = document.getElementById("school"); // Hidden input field
+			const schoolOptions = document.getElementById("school-options");
+		
+			schoolInput.addEventListener("input", function() {
+				const filter = schoolInput.value.toLowerCase();
+				const options = schoolOptions.querySelectorAll("li");
+				let visible = false;
+		
+				options.forEach(option => {
+					if (option.textContent.toLowerCase().includes(filter)) {
+						option.style.display = "block";
+						visible = true;
+					} else {
+						option.style.display = "none";
+					}
+				});
+		
+				schoolOptions.style.display = visible ? "block" : "none";
+			});
+		
+			schoolInput.addEventListener("blur", () => {
+				setTimeout(() => schoolOptions.style.display = "none", 200);
+			});
+		
+			schoolInput.addEventListener("focus", () => {
+				schoolOptions.style.display = "block";
+			});
+		
+			schoolOptions.addEventListener("click", function(event) {
+				if (event.target.tagName === "LI") {
+					const selectedSchool = event.target.textContent;
+		
+					// Update the visible input
+					schoolInput.value = selectedSchool;
+		
+					// Update the hidden input
+					if (hiddenSchoolInput) {
+						hiddenSchoolInput.value = selectedSchool;
+						console.log("Hidden School Input Updated:", hiddenSchoolInput.value);
+					}
+		
+					// Hide the dropdown
+					schoolOptions.style.display = "none";
+				}
+			});
+		});
+		
+		
+
+    </script>
+</head>
+<body>
+	<!-- Include Navbar -->
+	<div th:insert="fragments/navbar :: navbar"></div>
+
+	<div class="content">
+		<div class="header">
+			<div>
+				<a th:href="@{/user/profile}"> <i class="fa-solid fa-angle-left">Back</i>
+				</a>
+				<h2>Update Profile</h2>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="profile-container">
+				<div class="profile-header">
+					<img th:src="@{/resources/images/profile-pic.png}"
+						alt="Profile Picture">
+					<h2 th:text="'Update Profile'"></h2>
+				</div>
+
+				<!-- Profile Information Form -->
+				<form th:action="@{/user/updateProfile}" method="post"
+					class="profile-form" onsubmit="return confirmUpdate()">
+					<div class="profile-info-container">
+						<div class="input-group">
+							<label for="fullName">Full Name:</label> <input type="text"
+								id="fullName" name="fullName" th:value="${client.fullName}"
+								required>
+						</div>
+
+						<div class="input-group">
+							<label for="email">Email:</label> <input type="email" id="email"
+								name="email" th:value="${client.email}" required>
+						</div>
+
+						<div class="input-group">
+							<label for="identityCardNumber">ID Number:</label> <input
+								type="text" id="identityCardNumber" name="identityCardNumber"
+								th:value="${client.identityCardNumber}" required>
+						</div>
+
+						<!-- School Input with Dropdown -->
+						<div class="input-group"
+						th:if="${!#authentication.authorities.![authority].contains('ROLE_1')}">
+							<label for="school">School:</label> <input type="text"
+							name="school" id="school-input" th:value="${client.school}"
+							autocomplete="on" required>
+							<ul id="school-options" class="dropdown-options">
+								<!-- Dynamic list of schools from Thymeleaf -->
+								<li th:each="school : ${schools}" th:text="${school.name}"
+									class="school-option"></li>
+							</ul>
+						</div>
+						<div class="input-group"
+						th:if="${#authentication.authorities.![authority].contains('ROLE_1')}">
+							<input type="hidden" id="school" name="school" value="None">
+						</div>
+					</div>
+
+					<div class="header">
+						<button type="submit">Save Changes</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

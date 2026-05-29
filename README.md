@@ -1,57 +1,113 @@
 # TVPSSHub
 
-TVPSSHub is a Spring MVC + Hibernate web app with MySQL.
+TVPSSHub is a **Spring Boot** web application (Thymeleaf, Spring Security, Hibernate) backed by **MySQL**.
 
-## Quick Start
+## Project layout
 
-### 1. Prerequisites
+```
+src/main/java/com/example/
+  TvpsShubApplication.java     Application entry point
+  controller/                  Web controllers
+  config/                      Security & Hibernate config
+  dao/                         Data access (Hibernate sessions)
+  model/                       Entity / view models
+src/main/java/bdUtil/
+  HibernateCF.java             SessionFactory helper (injected by Spring)
+src/main/resources/
+  application.properties       Server port & context path
+  hibernate.cfg.xml            Database connection settings
+  templates/                   Thymeleaf HTML views
+  static/resources/            CSS and images (URL: /resources/...)
+  TVPSShub.sql                 Database schema & seed data
+```
 
-- JDK 11+ (tested with 21)
+## Prerequisites
+
+- JDK 11 or newer
 - Maven 3.8+
 - MySQL 5.7 or 8.x
 
-This project uses javax.servlet (Servlet 4), so use Jetty 10 or Tomcat 9.
+## Database setup
 
-### 2. Setup Database
+### phpMyAdmin (recommended if `mysql` is not on PATH)
 
-Run the SQL script from project root:
+1. Start MySQL (XAMPP Control Panel → **Start** MySQL).
+2. Open http://localhost/phpmyadmin
+3. Click database **`tvpsshub`** in the left sidebar (create it first with **New** → name `TVPSShub` if missing).
+4. Open the **SQL** tab.
+5. **Do not use** `DROP DATABASE TVPSShub` — it often fails with:
+   `#1010 - can't rmdir '.\tvpsshub', errno: 41 Directory not empty`
+6. Instead: **File → Open** (or paste) → run:
+   `src/main/resources/db/reset-tvpsshub-phpmyadmin.sql`
+7. Click **Go** / execute. All tables are recreated (existing data is deleted).
 
-```bash
-mysql -u root -p < src/main/webapp/TVPSShub.sql
+For only a broken `feedback` table, run `src/main/resources/db/repair-feedback.sql` in the same SQL tab.
+
+### Command line (if `mysql` is on PATH)
+
+**PowerShell:**
+
+```powershell
+Get-Content src\main\resources\db\reset-tvpsshub-phpmyadmin.sql | mysql -u root -p
 ```
 
-Then check database credentials in src/main/resources/hibernate.cfg.xml.
+**CMD:**
 
-### 3. Build
+```cmd
+mysql -u root -p < src\main\resources\db\reset-tvpsshub-phpmyadmin.sql
+```
 
-```bash
+Fresh install (new database only): `src\main\resources\TVPSShub.sql`
+
+Edit `src/main/resources/hibernate.cfg.xml` if your MySQL username or password differs from `root` / empty password.
+
+## Build and run
+
+```powershell
+cd C:\UTM\Semester8
 mvn clean package -DskipTests
+mvn spring-boot:run
 ```
 
-Output: target/TVPSSHub.war
+Or run the JAR:
 
-### 4. Run (Recommended)
-
-```bash
-mvn jetty:run
+```powershell
+java -jar target\TVPSSHub.jar
 ```
 
-Open: http://localhost:8081/TVPSSHub/
+Open in a browser:
 
-Change port if needed:
+| Page     | URL |
+|----------|-----|
+| Home     | http://localhost:8081/TVPSSHub/ |
+| Login    | http://localhost:8081/TVPSSHub/user/login |
+| Register | http://localhost:8081/TVPSSHub/user/register |
 
-```bash
-mvn jetty:run "-Djetty.http.port=9090"
+Change port:
+
+```powershell
+mvn spring-boot:run "-Dspring-boot.run.arguments=--server.port=9090"
 ```
 
-### 5. Verify
+## Common issues
 
-- Login: http://localhost:8081/TVPSSHub/user/login
-- Register: http://localhost:8081/TVPSSHub/user/register
+| Symptom | Cause | Fix |
+|---------|--------|-----|
+| `The '<' operator is reserved` | PowerShell does not support `< file.sql` | Use `Get-Content ... \| mysql` or CMD |
+| `not enough space on the disk` | Drive full (often `C:` or `.m2`) | Free disk space; delete `target\` if needed |
+| `mysql-connector-java ... version is missing` | Old artifact not in Spring Boot BOM | Use `com.mysql:mysql-connector-j` in `pom.xml` |
+| `Configuration is ambiguous` | Hibernate vs Spring class name clash | Use `org.hibernate.cfg.Configuration` explicitly in `HibernateConfig` |
+| Unknown database `TVPSShub` | DB not created | Run `TVPSShub.sql` |
+| Access denied for user | Wrong MySQL credentials | Update `hibernate.cfg.xml` |
+| `feedback' doesn't exist in engine` | Corrupt InnoDB `feedback` table | Run `db/repair-feedback.sql` or full `db/reset-tvpsshub-phpmyadmin.sql` |
+| `#1010 can't rmdir tvpsshub` (phpMyAdmin) | `DROP DATABASE` blocked by leftover files | Use `db/reset-tvpsshub-phpmyadmin.sql` (no DROP DATABASE) |
+| `mysql` not recognized | MySQL CLI not on PATH | Use phpMyAdmin steps above |
+| `Connection refused` | MySQL not running | Start MySQL (XAMPP/service), then retry |
 
-## Common Issues
+## Tech stack
 
-- Port already in use: run with a different jetty.http.port.
-- Unknown database TVPSShub: rerun src/main/webapp/TVPSShub.sql.
-- Access denied for MySQL user: update hibernate.cfg.xml credentials.
-- Running on Tomcat 10+ or Jetty 11+: switch to Tomcat 9 or Jetty 10.
+- Spring Boot 2.7
+- Spring MVC + Thymeleaf
+- Spring Security
+- Hibernate 5 (manual `SessionFactory`, not JPA)
+- MySQL

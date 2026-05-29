@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback List</title>
+<script src="https://kit.fontawesome.com/af766576f4.js"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/resources/css/general.css}">
+<link rel="stylesheet" th:href="@{/resources/css/activity.css}">
+<link rel="stylesheet" th:href="@{/resources/css/nav.css}">
+</head>
+<body>
+	<div>
+		<!-- Include the navbar using Thymeleaf -->
+		<div th:replace="fragments/navbar :: navbar"></div>
+	</div>
+	<div class="content">
+		<div class="header">
+			<div class="back">
+				<a th:onclick="history.back()"><i class="fa-solid fa-angle-left">Back</i></a>
+				<h2>Feedback</h2>
+			</div>
+		</div>
+		<div class="feedback-container">
+			<div th:if="${!feedbackList.isEmpty()}">
+				<table class="feedback-table">
+					<thead>
+						<tr>
+							<th>Feedback</th>
+							<th>Rating</th>
+							<th>Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="feedback : ${feedbackList}">
+							<td th:text="${feedback.feedbackText}"></td>
+							<td th:text="${feedback.rating}"></td>
+							<td th:text="${feedback.date}"></td>
+						</tr>
+					</tbody>
+				</table>
+		
+				<!-- Pagination -->
+				<div class="pagination">
+					<!-- Previous Page Button -->
+					<span th:if="${currentPage > 1}">
+						<button><a th:href="@{/activity/showFeedback/{id}(id=${activityId}, page=${currentPage-1})}">&laquo; Previous</a></button>
+					</span>
+				
+					<!-- Page Number Buttons -->
+					<span th:each="i : ${#numbers.sequence(1, totalPages)}">
+						<button><a th:href="@{/activity/showFeedback/{id}(id=${activityId}, page=${i})}"
+						   th:text="${i}"
+						   th:class="${i == currentPage ? 'active' : ''}"></a></button>
+					</span>
+				
+					<!-- Next Page Button -->
+					<span th:if="${currentPage < totalPages}">
+						<button><a th:href="@{/activity/showFeedback/{id}(id=${activityId}, page=${currentPage+1})}">Next &raquo;</a></button>
+					</span>
+				</div>
+				
+				
+			</div>
+		
+			<div th:if="${feedbackList.isEmpty()}">
+				<p th:text="${noFeedbackMessage}"></p>
+			</div>
+		</div>
+		
+
+	</div>
+</body>
+</html>

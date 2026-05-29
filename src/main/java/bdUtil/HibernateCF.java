@@ -1,31 +1,22 @@
 package bdUtil;
 
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import org.hibernate.cfg.Configuration;
-
-import com.example.model.UserViewModel;
-import com.example.model.ActivityViewModel;
-import com.example.model.Feedback;
-import com.example.model.School;
-import com.example.model.Resource;
-
-
+@Component
 public class HibernateCF {
-    static SessionFactory sessionFactory = null;
+
+    private static SessionFactory sessionFactory;
+
+    @Autowired
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        HibernateCF.sessionFactory = sessionFactory;
+    }
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
-            Configuration config = new Configuration();
-            config.configure("hibernate.cfg.xml");  // Load configuration file
-            // Add annotated classes for all the entities used in your project
-            config.addAnnotatedClass(UserViewModel.class);
-            config.addAnnotatedClass(ActivityViewModel.class);
-            config.addAnnotatedClass(Feedback.class);
-            config.addAnnotatedClass(School.class);
-            config.addAnnotatedClass(Resource.class);
-
-            sessionFactory = config.buildSessionFactory();
+            throw new IllegalStateException("SessionFactory has not been initialized");
         }
         return sessionFactory;
     }
