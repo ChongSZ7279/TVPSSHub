@@ -1,9 +1,13 @@
+com\example\service\SchoolService.class
 com\example\dao\ResourceDAO.class
 com\example\controller\ResourceController.class
 com\example\controller\ActivityController.class
+com\example\service\ActivityService.class
 com\example\TvpsShubApplication.class
 com\example\model\UserViewModel.class
 com\example\controller\SchoolController.class
+com\example\service\ResourceService.class
+com\example\service\UserService.class
 com\example\security\CustomUserDetails.class
 com\example\model\ActivityViewModel.class
 com\example\controller\UserViewController.class

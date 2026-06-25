@@ -4,3 +4,5 @@
 {"sessionId":"6c9dcf","runId":"post-fix","hypothesisId":"H4","location":"HibernateConfig","message":"sessionFactory build success","data":{"detail":"ok"},"timestamp":1780044372229}
 {"sessionId":"6c9dcf","runId":"post-fix","hypothesisId":"H4","location":"HibernateConfig","message":"sessionFactory build start","data":{"detail":"pre"},"timestamp":1780235573287}
 {"sessionId":"6c9dcf","runId":"post-fix","hypothesisId":"H4","location":"HibernateConfig","message":"sessionFactory build success","data":{"detail":"ok"},"timestamp":1780235574824}
+{"sessionId":"6c9dcf","runId":"post-fix","hypothesisId":"H4","location":"HibernateConfig","message":"sessionFactory build start","data":{"detail":"pre"},"timestamp":1782372766998}
+{"sessionId":"6c9dcf","runId":"post-fix","hypothesisId":"H4","location":"HibernateConfig","message":"sessionFactory build success","data":{"detail":"ok"},"timestamp":1782372768417}

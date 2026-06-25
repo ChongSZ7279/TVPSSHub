@@ -1,5 +1,6 @@
 C:\UTM\Semester8\src\main\java\com\example\TvpsShubApplication.java
 C:\UTM\Semester8\src\main\java\bdUtil\HibernateCF.java
+C:\UTM\Semester8\src\main\java\com\example\service\UserService.java
 C:\UTM\Semester8\src\main\java\com\example\controller\HomeController.java
 C:\UTM\Semester8\src\main\java\com\example\dao\ResourceDAO.java
 C:\UTM\Semester8\src\main\java\com\example\model\UserViewModel.java
@@ -7,11 +8,14 @@ C:\UTM\Semester8\src\main\java\com\example\controller\UserViewController.java
 C:\UTM\Semester8\src\main\java\com\example\model\School.java
 C:\UTM\Semester8\src\main\java\com\example\controller\ResourceController.java
 C:\UTM\Semester8\src\main\java\com\example\model\Resource.java
+C:\UTM\Semester8\src\main\java\com\example\service\ResourceService.java
 C:\UTM\Semester8\src\main\java\com\example\dao\ActivityDAO.java
 C:\UTM\Semester8\src\main\java\com\example\dao\SchoolDAO.java
+C:\UTM\Semester8\src\main\java\com\example\service\SchoolService.java
 C:\UTM\Semester8\src\main\java\com\example\security\CustomUserDetails.java
 C:\UTM\Semester8\src\main\java\com\example\config\SecurityConfig.java
 C:\UTM\Semester8\src\main\java\com\example\dao\FeedbackDAO.java
+C:\UTM\Semester8\src\main\java\com\example\service\ActivityService.java
 C:\UTM\Semester8\src\main\java\com\example\dao\UserDAO.java
 C:\UTM\Semester8\src\main\java\com\example\model\ActivityViewModel.java
 C:\UTM\Semester8\src\main\java\com\example\controller\SchoolController.java

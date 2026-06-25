@@ -1,12 +1,10 @@
 package com.example.controller;
 
-import com.example.dao.ActivityDAO;
-import com.example.dao.FeedbackDAO;
-import com.example.dao.UserDAO;
-
 import com.example.model.ActivityViewModel;
 import com.example.model.UserViewModel;
 import com.example.model.Feedback;
+import com.example.service.ActivityService;
+import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -23,18 +21,15 @@ import java.time.LocalDate;
 public class ActivityController {
 
     @Autowired
-    private ActivityDAO activityDAO;
+    private ActivityService activityService;
 
     @Autowired
-    private FeedbackDAO feedbackDAO;
-
-    @Autowired
-    private UserDAO userDAO;
+    private UserService userService;
 
     // Show activity list - Everyone can access
     @GetMapping("/activityList")
     public String showActivityList(Model model) {
-        List<ActivityViewModel> activities = activityDAO.getAllActivities();
+        List<ActivityViewModel> activities = activityService.getAllActivities();
         model.addAttribute("activities", activities);
         return "activity/activityList";
     }
@@ -51,17 +46,17 @@ public class ActivityController {
     public String processAddActivityForm(@ModelAttribute("activity") ActivityViewModel activity,
             Authentication authentication) {
         // Get current user's ID from authentication
-        UserViewModel currentUser = userDAO.findUserByEmail(authentication.getName());
+        UserViewModel currentUser = userService.findUserByEmail(authentication.getName());
         activity.setCreatorId(currentUser.getId());
 
-        activityDAO.saveActivity(activity);
+        activityService.saveActivity(activity);
         return "redirect:/activity/activityList";
     }
 
     // View Activity Details - Everyone can access
     @GetMapping("/activityDetails/{id}")
     public String showActivityDetails(@PathVariable("id") int id, Model model) {
-        ActivityViewModel activity = activityDAO.findActivityById(id);
+        ActivityViewModel activity = activityService.findActivityById(id);
         if (activity == null) {
             model.addAttribute("error", "Activity not found.");
             return "redirect:/activity/activityList";
@@ -76,8 +71,8 @@ public class ActivityController {
     public String showEditActivityForm(@PathVariable("id") int id, Authentication authentication, Model model) {
         System.out.println("Principal: " + authentication.getPrincipal());
 
-        ActivityViewModel activity = activityDAO.findActivityById(id);
-        UserViewModel currentUser = userDAO.findUserByEmail(authentication.getName());
+        ActivityViewModel activity = activityService.findActivityById(id);
+        UserViewModel currentUser = userService.findUserByEmail(authentication.getName());
 
         if (activity == null) {
             model.addAttribute("error", "Activity not found.");
@@ -99,8 +94,8 @@ public class ActivityController {
             @ModelAttribute("activity") ActivityViewModel updatedActivity,
             Authentication authentication,
             Model model) {
-        ActivityViewModel existingActivity = activityDAO.findActivityById(id);
-        UserViewModel currentUser = userDAO.findUserByEmail(authentication.getName());
+        ActivityViewModel existingActivity = activityService.findActivityById(id);
+        UserViewModel currentUser = userService.findUserByEmail(authentication.getName());
 
         if (existingActivity != null && existingActivity.getCreatorId() == currentUser.getId()) {
             // Update activity fields
@@ -118,7 +113,7 @@ public class ActivityController {
             existingActivity.setParticipantsSecondary(updatedActivity.getParticipantsSecondary());
             existingActivity.setParticipantsOpen(updatedActivity.getParticipantsOpen());
 
-            activityDAO.updateActivity(existingActivity);
+            activityService.updateActivity(existingActivity);
             model.addAttribute("message", "Activity updated successfully.");
         }
         return "redirect:/activity/activityDetails/" + id;
@@ -129,7 +124,7 @@ public class ActivityController {
     public String filterActivities(@RequestParam(value = "searchKeyword", required = false) String searchKeyword,
             @RequestParam(value = "location", required = false) String location,
             Model model) {
-        List<ActivityViewModel> activities = activityDAO.getFilteredActivities(searchKeyword, location);
+        List<ActivityViewModel> activities = activityService.getFilteredActivities(searchKeyword, location);
         model.addAttribute("activities", activities);
         return "activity/activityList";
     }
@@ -142,7 +137,7 @@ public class ActivityController {
             Model model) {
 
         // Fetch feedback for the activity from the DAO
-        List<Feedback> feedbackList = feedbackDAO.getFeedbackByActivityId(activityId);
+        List<Feedback> feedbackList = activityService.getFeedbackByActivityId(activityId);
 
         // Handle the case where there are no feedbacks
         if (feedbackList == null || feedbackList.isEmpty()) {
@@ -181,7 +176,7 @@ public class ActivityController {
     @PreAuthorize("hasRole('ROLE_1')")
     @GetMapping("/addFeedback")
     public String showAddFeedback(@RequestParam("activityId") int activityId, Model model) {
-        ActivityViewModel activity = activityDAO.findActivityById(activityId);
+        ActivityViewModel activity = activityService.findActivityById(activityId);
         if (activity == null) {
             throw new IllegalArgumentException("Activity not found for ID: " + activityId);
         }
@@ -198,7 +193,7 @@ public class ActivityController {
             Authentication authentication,
             @RequestParam("date") String date) {
 
-        UserViewModel currentUser = userDAO.findUserByEmail(authentication.getName());
+        UserViewModel currentUser = userService.findUserByEmail(authentication.getName());
         LocalDate parsedDate = LocalDate.parse(date);
 
         Feedback feedback = new Feedback();
@@ -208,7 +203,7 @@ public class ActivityController {
         feedback.setUserId(currentUser.getId().intValue());
         feedback.setDate(parsedDate);
 
-        feedbackDAO.save(feedback);
+        activityService.saveFeedback(feedback);
         return "redirect:/activity/activityDetails/" + activityId;
     }
 

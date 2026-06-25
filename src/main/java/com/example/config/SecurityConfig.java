@@ -17,9 +17,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Arrays;
 
-import com.example.dao.UserDAO;
 import com.example.model.UserViewModel;
 import com.example.security.CustomUserDetails;
+import com.example.service.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -27,7 +27,7 @@ import com.example.security.CustomUserDetails;
 public class SecurityConfig {
 
     @Autowired
-    private UserDAO userDAO;
+    private UserService userService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -71,7 +71,7 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            UserViewModel user = userDAO.findUserByEmail(username);
+            UserViewModel user = userService.findUserByEmail(username);
             if (user == null) {
                 throw new UsernameNotFoundException("User not found");
             }

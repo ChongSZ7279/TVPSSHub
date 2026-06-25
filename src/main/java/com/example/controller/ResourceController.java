@@ -16,20 +16,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.dao.ResourceDAO;
-import com.example.dao.UserDAO;
 import com.example.model.Resource;
 import com.example.model.UserViewModel;
+import com.example.service.ResourceService;
+import com.example.service.UserService;
 
 @Controller
 @RequestMapping("/resource")
 public class ResourceController {
 
     @Autowired
-    private ResourceDAO resourceDAO;
+    private ResourceService resourceService;
 
 	@Autowired
-	private UserDAO userDAO; 
+	private UserService userService;
 
     @GetMapping("/list")
     public String listResources(Model model) {
@@ -38,10 +38,10 @@ public class ResourceController {
         String userEmail = auth.getName();
         
         // Get user's school
-        UserViewModel user = userDAO.getUserByEmail(userEmail);
+        UserViewModel user = userService.getUserByEmail(userEmail);
         
         // Get resources
-        List<Resource> resources = resourceDAO.getAllResources();
+        List<Resource> resources = resourceService.getAllResources();
         
         // Add both resources and user's school to model
         model.addAttribute("resources", resources);
@@ -64,19 +64,19 @@ public class ResourceController {
     String userEmail = auth.getName();
     
     // Get user's school
-    UserViewModel user = userDAO.getUserByEmail(userEmail);
+    UserViewModel user = userService.getUserByEmail(userEmail);
     
     // Set school in resource
     resource.setSchool(user.getSchool());
     resource.setUpdatedDate(LocalDate.now());
     resource.setState("Pending");
-        resourceDAO.saveResource(resource);
+        resourceService.saveResource(resource);
         return "redirect:/resource/list";
     }
 
     @GetMapping("/editResource/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
-        Resource resource = resourceDAO.getResourceById(id);
+        Resource resource = resourceService.getResourceById(id);
         if (resource != null) {
             model.addAttribute("resource", resource);
             return "resources/editResource";
@@ -86,20 +86,20 @@ public class ResourceController {
 
     @PostMapping("/editResource")
     public String updateResource(@ModelAttribute("resource") Resource resource) {
-        resourceDAO.saveResource(resource);
+        resourceService.saveResource(resource);
         return "redirect:/resource/list";
     }
 
     @PreAuthorize("hasAnyRole('ROLE_2', 'ROLE_3')")
     @GetMapping("/deleteResource/{id}")
     public String deleteResource(@PathVariable Long id) {
-        resourceDAO.deleteResource(id);
+        resourceService.deleteResource(id);
         return "redirect:/resource/list";
     }
 
     @GetMapping("/viewDetails/{id}")
     public String viewDetails(@PathVariable Long id, Model model) {
-        Resource resource = resourceDAO.getResourceById(id);
+        Resource resource = resourceService.getResourceById(id);
         if (resource != null) {
             model.addAttribute("resource", resource);
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -117,7 +117,7 @@ public class ResourceController {
                           @RequestParam("action") String action,
                           Model model) {
         // Get existing resource
-        Resource existingResource = resourceDAO.getResourceById(id);
+        Resource existingResource = resourceService.getResourceById(id);
         
         // Update fields
         existingResource.setReply(reply);
@@ -125,10 +125,10 @@ public class ResourceController {
         existingResource.setUpdatedDate(LocalDate.now());
         
         // Save updated resource
-        resourceDAO.saveResource(existingResource);
+        resourceService.saveResource(existingResource);
         
         // Refresh list and return view
-        List<Resource> resources = resourceDAO.getAllResources();
+        List<Resource> resources = resourceService.getAllResources();
         model.addAttribute("resources", resources);
         return "redirect:/resource/list";
     }
@@ -139,7 +139,7 @@ public class ResourceController {
         @RequestParam(required = false) String state,
         Model model) {
         
-        List<Resource> resources = resourceDAO.getFilteredResources(searchText, state);
+        List<Resource> resources = resourceService.getFilteredResources(searchText, state);
         model.addAttribute("resources", resources);
         return "resources/resourceList";
     }

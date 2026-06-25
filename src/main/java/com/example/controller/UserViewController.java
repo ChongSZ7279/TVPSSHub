@@ -1,8 +1,10 @@
 package com.example.controller;
 
-import com.example.dao.*;
-
 import com.example.model.*;
+import com.example.service.ActivityService;
+import com.example.service.ResourceService;
+import com.example.service.SchoolService;
+import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -20,16 +22,16 @@ import org.springframework.security.access.prepost.PreAuthorize;
 public class UserViewController {
 
 	@Autowired
-	private UserDAO userDAO; // Injecting UserDAO
+	private UserService userService;
 
 	@Autowired
-	private ActivityDAO programDAO;
+	private ActivityService activityService;
 
 	@Autowired
-	private SchoolDAO schoolDAO;
+	private SchoolService schoolService;
 
 	@Autowired
-	private ResourceDAO resourceDAO;
+	private ResourceService resourceService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -37,7 +39,7 @@ public class UserViewController {
 	// Show registration form
 	@GetMapping("/register")
 	public String showRegisterForm(Model model) {
-		List<School> schools = schoolDAO.getAllSchools();
+		List<School> schools = schoolService.getAllSchools();
 		model.addAttribute("schools", schools);
 		model.addAttribute("client", new UserViewModel());
 		return "user/register";
@@ -64,14 +66,14 @@ public class UserViewController {
 		}
 
 		// Check if email exists
-		UserViewModel existingUser = userDAO.findUserByEmail(client.getEmail());
+		UserViewModel existingUser = userService.findUserByEmail(client.getEmail());
 		if (existingUser != null) {
 			model.addAttribute("error", "Email already exists.");
 			return "user/register";
 		}
 
 		// Check if identity card number (IC) exists
-		List<UserViewModel> usersWithIC = userDAO.findUsersByIC(client.getIdentityCardNumber());
+		List<UserViewModel> usersWithIC = userService.findUsersByIC(client.getIdentityCardNumber());
 		if (!usersWithIC.isEmpty()) {
 			model.addAttribute("error", "Identity Card Number already exists.");
 			return "user/register";
@@ -81,7 +83,7 @@ public class UserViewController {
 		client.setPassword(passwordEncoder.encode(client.getPassword()));
 		client.setRole(3); // Default role as student
 		try {
-			userDAO.saveUser(client);
+			userService.saveUser(client);
 		} catch (Exception e) {
 			model.addAttribute("error", "An unexpected error occurred. Please try again.");
 			e.printStackTrace();
@@ -105,7 +107,7 @@ public class UserViewController {
 			System.out.println("Authentication name: " + authentication.getName());
 			System.out.println("Authentication authorities: " + authentication.getAuthorities());
 
-			UserViewModel user = userDAO.findUserByEmail(authentication.getName());
+			UserViewModel user = userService.findUserByEmail(authentication.getName());
 			if (user == null) {
 				System.out.println("User not found in database");
 				return "redirect:/user/login";
@@ -114,9 +116,9 @@ public class UserViewController {
 			System.out.println("Found user: " + user.getEmail() + " with role: " + user.getRole());
 
 			// Load all required data
-			List<ActivityViewModel> programs = programDAO.getAllActivities();
-			List<School> schools = schoolDAO.getAllSchools();
-			List<Resource> resources = resourceDAO.getAllResources();
+			List<ActivityViewModel> programs = activityService.getAllActivities();
+			List<School> schools = schoolService.getAllSchools();
+			List<Resource> resources = resourceService.getAllResources();
 
 			// Add to model
 			model.addAttribute("client", user);
@@ -135,7 +137,7 @@ public class UserViewController {
 	// Show profile
 	@GetMapping("/profile")
 	public String showProfile(Model model, Authentication authentication) {
-		UserViewModel user = userDAO.findUserByEmail(authentication.getName());
+		UserViewModel user = userService.findUserByEmail(authentication.getName());
 		if (user == null) {
 			model.addAttribute("error", "You must log in to view the profile.");
 			return "redirect:/user/login";
@@ -146,12 +148,12 @@ public class UserViewController {
 
 	@GetMapping("/updateProfile")
 	public String showUpdateProfile(Model model, Authentication authentication) {
-		UserViewModel user = userDAO.findUserByEmail(authentication.getName());
+		UserViewModel user = userService.findUserByEmail(authentication.getName());
 		if (user == null) {
 			return "redirect:/user/login";
 		}
 
-		List<School> schoolList = schoolDAO.getAllSchools(); // Retrieve school list from DB
+		List<School> schoolList = schoolService.getAllSchools(); // Retrieve school list from DB
 		model.addAttribute("client", user);
 		model.addAttribute("schools", schoolList); // Pass school list to the view
 		return "user/updateProfile";
@@ -160,7 +162,7 @@ public class UserViewController {
 	@PostMapping("/updateProfile")
 	public String updateProfile(@ModelAttribute("client") UserViewModel updatedClient, Authentication authentication,
 			Model model) {
-		UserViewModel loggedInUser = userDAO.findUserByEmail(authentication.getName());
+		UserViewModel loggedInUser = userService.findUserByEmail(authentication.getName());
 		if (loggedInUser == null) {
 			model.addAttribute("error", "You must log in to update your profile.");
 			return "redirect:/user/login";
@@ -178,7 +180,7 @@ public class UserViewController {
 		}
 
 		// Save updated user details to the database
-		userDAO.updateUser(loggedInUser);
+		userService.updateUser(loggedInUser);
 
 		// Redirect to profile page with a success message
 		return "redirect:/user/profile?message=Profile+updated+successfully";
@@ -194,14 +196,14 @@ public class UserViewController {
 			Model model, Authentication authentication) {
 
 		// Get the current user's school
-		UserViewModel user = userDAO.findUserByEmail(authentication.getName());
+		UserViewModel user = userService.findUserByEmail(authentication.getName());
 
 		// Apply filters based on user input
 		List<UserViewModel> userList;
 		if (name != null || email != null || role != null) {
-			userList = userDAO.findUsersByFilter(user.getSchool(), name, email, role);
+			userList = userService.findUsersByFilter(user.getSchool(), name, email, role);
 		} else {
-			userList = userDAO.findUsersBySchool(user.getSchool());
+			userList = userService.findUsersBySchool(user.getSchool());
 		}
 
 		// Pagination logic
@@ -237,7 +239,7 @@ public class UserViewController {
 	@PreAuthorize("hasRole('ROLE_2')")
 	@GetMapping("/createUser")
 	public String showCreateUser(Model model, Authentication authentication) {
-		UserViewModel teacher = userDAO.findUserByEmail(authentication.getName());
+		UserViewModel teacher = userService.findUserByEmail(authentication.getName());
 		UserViewModel newUser = new UserViewModel();
 		newUser.setSchool(teacher.getSchool());
 		model.addAttribute("client", newUser);
@@ -248,7 +250,7 @@ public class UserViewController {
 	@PostMapping("/createUser")
 	public String processCreateUser(@ModelAttribute("client") UserViewModel client, Model model,
 			Authentication authentication) {
-		UserViewModel teacher = userDAO.findUserByEmail(authentication.getName());
+		UserViewModel teacher = userService.findUserByEmail(authentication.getName());
 
 		// Validate school matches teacher's school
 		if (!client.getSchool().equals(teacher.getSchool())) {
@@ -257,7 +259,7 @@ public class UserViewController {
 		}
 
 		// Check if email exists
-		if (userDAO.findUserByEmail(client.getEmail()) != null) {
+		if (userService.findUserByEmail(client.getEmail()) != null) {
 			model.addAttribute("error", "Email already exists.");
 			return "user/createUser";
 		}
@@ -265,7 +267,7 @@ public class UserViewController {
 		// Save new user
 		client.setPassword(passwordEncoder.encode(client.getPassword()));
 		client.setRole(3); // Default role as student
-		userDAO.saveUser(client);
+		userService.saveUser(client);
 
 		return "redirect:/user/userList";
 	}
@@ -276,10 +278,10 @@ public class UserViewController {
 	public String showEditUser(@PathVariable("id") Long id, Model model, Authentication authentication) {
 		// Get logged-in user using Authentication object
 		String email = authentication.getName();
-		UserViewModel loggedInClient = userDAO.findUserByEmail(email);
+		UserViewModel loggedInClient = userService.findUserByEmail(email);
 
 		// Fetch the user by id
-		UserViewModel user = userDAO.findUserById(id);
+		UserViewModel user = userService.findUserById(id);
 		if (user != null) {
 			// Ensure the user is part of the same school as the logged-in user
 			if (!user.getSchool().equals(loggedInClient.getSchool())) {
@@ -301,13 +303,13 @@ public class UserViewController {
 			Authentication authentication, Model model) {
 		// Get logged-in user using Authentication object
 		String email = authentication.getName();
-		UserViewModel loggedInClient = userDAO.findUserByEmail(email);
+		UserViewModel loggedInClient = userService.findUserByEmail(email);
 
 		// Ensure the updated school matches the logged-in user's school
 		updatedUser.setSchool(loggedInClient.getSchool());
 
 		// Save the user
-		userDAO.updateUser(updatedUser);
+		userService.updateUser(updatedUser);
 
 		return "redirect:/user/userList"; // Redirect back to the user list page after update
 	}
@@ -318,10 +320,10 @@ public class UserViewController {
 	public String deleteUser(@PathVariable("id") Long id, Authentication authentication, Model model) {
 		// Get logged-in user using Authentication object
 		String email = authentication.getName();
-		UserViewModel loggedInClient = userDAO.findUserByEmail(email);
+		UserViewModel loggedInClient = userService.findUserByEmail(email);
 
 		// Check if the user exists
-		UserViewModel user = userDAO.findUserById(id);
+		UserViewModel user = userService.findUserById(id);
 		if (user == null) {
 			model.addAttribute("error", "User not found.");
 			return "redirect:/user/userList";
@@ -334,7 +336,7 @@ public class UserViewController {
 		}
 
 		// Delete the user
-		userDAO.deleteUserById(id);
+		userService.deleteUserById(id);
 
 		// Redirect to user list with success message
 		model.addAttribute("success", "User deleted successfully.");
