@@ -32,6 +32,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                // 1. Disable CSRF for testing POST requests in Postman
+                .csrf(csrf -> csrf.disable())
+
+                // 2. Enable HTTP Basic Authentication for Postman headers
+                .httpBasic(org.springframework.security.config.Customizer.withDefaults())
+                
                 .authorizeHttpRequests(auth -> auth
                         .antMatchers("/resources/**").permitAll()
                         .antMatchers("/css/**").permitAll()
