@@ -19,7 +19,7 @@ src/main/resources/
   hibernate.cfg.xml            Database connection settings
   templates/                   Thymeleaf HTML views
   static/resources/            CSS and images (URL: /resources/...)
-  TVPSShub.sql                 Database schema (no default users)
+  TVPSShub.sql                 Database schema
 ```
 
 ## System actors
@@ -68,17 +68,17 @@ The system has **3 actors**. Roles are stored in the `users.role` column and are
 
 ## Default accounts
 
-The current SQL files **do not include default user accounts**. Both `src/main/resources/TVPSShub.sql` and `src/main/resources/db/reset-tvpsshub-phpmyadmin.sql` create the tables only; they do not insert Admin, Teacher, or Student users.
+The reset script `src/main/resources/db/reset-tvpsshub-phpmyadmin.sql` creates one demo school and three default accounts.
 
-After a fresh database reset:
+Default password for all seeded accounts: `Password123!`
 
 | Account type | Default email | Default password | Notes |
 |--------------|---------------|------------------|-------|
-| Admin | Not provided | Not provided | Must be created manually in the database or added to the seed SQL |
-| Teacher | Not provided | Not provided | Must be created manually in the database or added to the seed SQL |
-| Student | Not provided | Not provided | Can be created through `/user/register`; new registrations are assigned role `3` |
+| Admin | `admin@tvpsshub.test` | `Password123!` | Role `1`; manages schools, feedback, and resource approvals |
+| Teacher | `teacher@tvpsshub.test` | `Password123!` | Role `2`; linked to `Sekolah Tinggi Segamat` |
+| Student | `student@tvpsshub.test` | `Password123!` | Role `3`; linked to `Sekolah Tinggi Segamat` |
 
-Important: passwords must be stored as BCrypt hashes because the app uses `BCryptPasswordEncoder`. A plain text password inserted directly into the `users.password` column will not work for login.
+Important: passwords are stored in SQL as BCrypt hashes because the app uses `BCryptPasswordEncoder`. A plain text password inserted directly into the `users.password` column will not work for login.
 
 ## Prerequisites
 

@@ -113,3 +113,90 @@ CREATE TABLE resource (
     description TEXT DEFAULT NULL,
     reply TEXT DEFAULT NULL
 ) ENGINE=InnoDB;
+
+-- =========================
+-- DEFAULT DATA
+-- =========================
+-- Default login password for all seeded accounts: Password123!
+-- Passwords are stored as BCrypt hashes for Spring Security.
+
+INSERT INTO schools (
+    id,
+    name,
+    district,
+    representative,
+    code,
+    address,
+    postcode,
+    city,
+    state,
+    phone,
+    studio,
+    school_recording,
+    upload_youtube,
+    recording,
+    collaborate,
+    greenscreen
+) VALUES (
+    1,
+    'Sekolah Tinggi Segamat',
+    'Segamat',
+    'Default Representative',
+    'JEA7001',
+    'Jalan Genuang',
+    '85000',
+    'Segamat',
+    'Johor',
+    '07-0000000',
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+);
+
+INSERT INTO users (
+    id,
+    full_name,
+    email,
+    password,
+    date_of_birth,
+    school,
+    school_id,
+    identity_card_number,
+    role
+) VALUES
+(
+    1,
+    'Default Admin',
+    'admin@tvpsshub.test',
+    '$2a$10$N51xju2FjZNy1cr4WDoEQ.pvjIsqs8UV9Th4Z.CTAVvcR4hwo7nES',
+    '1990-01-01',
+    NULL,
+    NULL,
+    '900101010001',
+    1
+),
+(
+    2,
+    'Default Teacher',
+    'teacher@tvpsshub.test',
+    '$2a$10$N51xju2FjZNy1cr4WDoEQ.pvjIsqs8UV9Th4Z.CTAVvcR4hwo7nES',
+    '1990-01-02',
+    'Sekolah Tinggi Segamat',
+    1,
+    '900102010002',
+    2
+),
+(
+    3,
+    'Default Student',
+    'student@tvpsshub.test',
+    '$2a$10$N51xju2FjZNy1cr4WDoEQ.pvjIsqs8UV9Th4Z.CTAVvcR4hwo7nES',
+    '2008-01-03',
+    'Sekolah Tinggi Segamat',
+    1,
+    '080103010003',
+    3
+);
