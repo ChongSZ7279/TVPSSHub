@@ -19,14 +19,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                echo "Checking out source code..."
-                checkout scm
-            }
-        }
-
-
         stage('Build') {
             steps {
                 echo "Building application..."
@@ -49,14 +41,12 @@ pipeline {
             }
         }
 
-
         stage('Lint') {
             steps {
                 echo "Running code quality check..."
                 bat 'mvn checkstyle:check'
             }
         }
-
     }
 
 
