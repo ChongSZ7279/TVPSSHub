@@ -69,25 +69,25 @@
 
         <!-- Lint / Code Quality Check -->
         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>3.3.0</version>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>3.3.0</version>
 
-            <executions>
-                <execution>
-                    <id>checkstyle-validation</id>
-                    <phase>verify</phase>
-                    <goals>
-                        <goal>check</goal>
-                    </goals>
-                </execution>
-            </executions>
+          <executions>
+              <execution>
+                  <id>checkstyle-validation</id>
+                  <phase>verify</phase>
+                  <goals>
+                      <goal>check</goal>
+                  </goals>
+              </execution>
+          </executions>
 
-            <configuration>
-                <failsOnError>false</failsOnError>
-            </configuration>
+          <configuration>
+              <failOnViolation>false</failOnViolation>
+          </configuration>
 
-        </plugin>
+      </plugin>
 
     </plugins>
 </build>
