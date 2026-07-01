@@ -3,7 +3,6 @@ pipeline {
     agent any
 
     tools {
-        jdk 'jdk-11'
         maven 'maven-3'
     }
 
@@ -31,7 +30,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Building application..."
-                sh 'mvn -B -ntp clean compile'
+                bat 'mvn -B -ntp clean compile'
             }
         }
 
@@ -39,13 +38,13 @@ pipeline {
         stage('Test') {
             steps {
                 echo "Running tests..."
-                sh 'mvn -B -ntp test'
+                bat 'mvn -B -ntp test'
             }
 
             post {
                 always {
                     junit allowEmptyResults: true,
-                          testResults: 'target/surefire-reports/*.xml'
+                    testResults: 'target/surefire-reports/*.xml'
                 }
             }
         }
@@ -54,10 +53,7 @@ pipeline {
         stage('Lint') {
             steps {
                 echo "Running code quality check..."
-
-                sh '''
-                mvn checkstyle:check
-                '''
+                bat 'mvn checkstyle:check'
             }
         }
 
@@ -70,11 +66,9 @@ pipeline {
             echo "Pipeline completed successfully."
         }
 
-
         failure {
-            echo "Pipeline failed. Check Jenkins logs."
+            echo "Pipeline failed."
         }
-
 
         always {
             cleanWs()
