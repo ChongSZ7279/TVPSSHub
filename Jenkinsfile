@@ -11,28 +11,30 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10'))
         timeout(time: 30, unit: 'MINUTES')
     }
-
     environment {
         MAVEN_OPTS = '-Dmaven.repo.local=.m2/repository'
     }
-
-
+    
     stages {
+        stage('Checkout') {
+            steps {
+                echo "Checking out source code..."
+                checkout scm
 
+                bat 'git log -1 --oneline'
+            }
+        }
         stage('Build') {
             steps {
                 echo "Building application..."
                 bat 'mvn -B -ntp clean compile'
             }
         }
-
-
         stage('Test') {
             steps {
                 echo "Running tests..."
                 bat 'mvn -B -ntp test'
             }
-
             post {
                 always {
                     junit allowEmptyResults: true,
@@ -49,17 +51,14 @@ pipeline {
         }
     }
 
-
     post {
 
         success {
             echo "Pipeline completed successfully."
         }
-
         failure {
             echo "Pipeline failed."
         }
-
         always {
             cleanWs()
         }
