@@ -12,6 +12,7 @@ pipeline {
     }
     environment {
         MAVEN_OPTS = '-Dmaven.repo.local=.m2/repository'
+        DOCKER_IMAGE = "tanyunxi/tvpsshub"
     }
     
     stages {
@@ -68,6 +69,67 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy') {
+
+            steps {
+
+                echo "Packaging application"
+
+                bat 'mvn package -DskipTests'
+
+            }
+
+        }
+        stage('Build Docker Image') {
+            steps {
+                echo "Building Docker image..."
+
+                bat """
+                docker build -t %DOCKER_IMAGE%:latest .
+                """
+            }
+        }
+        
+        stage('Tag Docker Image') {
+            steps {
+                script {
+                    def commitId = bat(
+                        script: "git rev-parse --short HEAD",
+                        returnStdout: true
+                    ).trim()
+
+                    env.COMMIT_ID = commitId
+
+                    bat """
+                    docker tag %DOCKER_IMAGE%:latest %DOCKER_IMAGE%:%COMMIT_ID%
+                    """
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(
+                        credentialsId: 'dockerhub-creds',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
+                    )]) {
+
+                        bat """
+                        echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+                        """
+
+                        bat """
+                        docker push %DOCKER_IMAGE%:latest
+                        docker push %DOCKER_IMAGE%:%COMMIT_ID%
+                        """
+                    }
+                }
+            }
+        }
+
     }
 
     post {
