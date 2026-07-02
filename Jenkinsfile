@@ -97,12 +97,12 @@ pipeline {
                 script {
 
                     env.COMMIT_ID = bat(
-                        script: 'git rev-parse --short HEAD',
+                        script: '@echo off\r\ngit rev-parse --short HEAD',
                         returnStdout: true
                     ).trim()
 
                     bat """
-                    docker tag %DOCKER_IMAGE%:latest %DOCKER_IMAGE%:%COMMIT_ID%
+                    docker tag ${DOCKER_IMAGE}:latest ${DOCKER_IMAGE}:${COMMIT_ID}
                     """
                 }
             }
