@@ -14,7 +14,7 @@ pipeline {
 
     environment {
         MAVEN_OPTS = '-Dmaven.repo.local=.m2/repository'
-        DOCKER_IMAGE = "tanyunxi/tvpsshub"
+        DOCKER_IMAGE = "ivlyntay/tvpsshub"
     }
 
     stages {
@@ -111,7 +111,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'docker-token',
+                    credentialsId: 'dockerhub-creds',
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
