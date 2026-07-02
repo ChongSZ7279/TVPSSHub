@@ -14,7 +14,7 @@ pipeline {
 
     environment {
         MAVEN_OPTS = '-Dmaven.repo.local=.m2/repository'
-        DOCKER_IMAGE = "ivlyntay/tvpsshub"
+        DOCKER_IMAGE = "tanyunxi/tvpsshub"
     }
 
     stages {
