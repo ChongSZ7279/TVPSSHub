@@ -48,6 +48,26 @@ pipeline {
                 bat 'mvn checkstyle:check'
             }
         }
+
+        stage('Performance Test (JMeter)') {
+            steps {
+                echo "Running JMeter performance test..."
+
+                bat '''
+                jmeter -n ^
+                -t test/performance-test.jmx ^
+                -l target/jmeter-results.jtl ^
+                -e ^
+                -o target/jmeter-report
+                '''
+            }
+
+            post {
+                always {
+                    archiveArtifacts artifacts: 'target/jmeter-report/**', allowEmptyArchive: true
+                }
+            }
+        }
     }
 
     post {
