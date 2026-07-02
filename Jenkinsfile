@@ -27,17 +27,6 @@ pipeline {
             }
         }
 
-        stage('Test Docker Login') {
-            steps {
-                script {
-                    bat """
-                    echo Logging in to Docker Hub...
-                    echo %DOCKER_PASS%|docker login -u %DOCKER_USER% --password-stdin
-                    """
-                }
-            }
-        }
-
         stage('Build') {
             steps {
                 echo "Building application..."
