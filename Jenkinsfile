@@ -14,7 +14,7 @@ pipeline {
 
     environment {
         MAVEN_OPTS = '-Dmaven.repo.local=.m2/repository'
-        DOCKER_IMAGE = "ivlyntay/tvpsshub"
+        DOCKER_IMAGE = "tanyunxi/tvpsshub"
     }
 
     stages {
@@ -107,24 +107,40 @@ pipeline {
                 }
             }
         }
-
         stage('Push Docker Image') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-creds',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
-
+                script {
                     bat """
-                    echo Pushing Docker Image test
+                    echo Logging in to Docker Hub...
                     echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
-                    docker push ${env.DOCKER_IMAGE}:latest
-                    docker push ${env.DOCKER_IMAGE}:${env.COMMIT_ID}
+
+                    echo Pushing latest image...
+                    docker push %DOCKER_IMAGE%:latest
+
+                    echo Pushing commit-tagged image...
+                    docker push %DOCKER_IMAGE%:%COMMIT_ID%
                     """
                 }
             }
         }
+
+        // stage('Push Docker Image') {
+        //     steps {
+        //         withCredentials([usernamePassword(
+        //             credentialsId: 'dockerhub-creds',
+        //             usernameVariable: 'DOCKER_USER',
+        //             passwordVariable: 'DOCKER_PASS'
+        //         )]) {
+
+        //             bat """
+        //             echo Pushing Docker Image test
+        //             echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+        //             docker push ${env.DOCKER_IMAGE}:latest
+        //             docker push ${env.DOCKER_IMAGE}:${env.COMMIT_ID}
+        //             """
+        //         }
+        //     }
+        // }
     }
 
     post {
