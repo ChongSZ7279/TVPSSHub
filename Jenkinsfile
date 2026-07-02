@@ -55,6 +55,33 @@ pipeline {
             }
         }
 
+        stage('Performance Test (JMeter)') {
+            steps {
+                echo "Running JMeter performance test..."
+
+                bat '''
+                jmeter -n ^
+                -t test/performance-test.jmx ^
+                -l target/jmeter-results.jtl ^
+                -e ^
+                -o target/jmeter-report
+                '''
+            }
+
+            post {
+                always {
+                    archiveArtifacts artifacts: 'target/jmeter-report/**', allowEmptyArchive: true
+                }
+            }
+        }
+
+        stage('Deploy (creates artifact needed for Docker)') {
+            steps {
+                echo "Packaging Spring Boot application..."
+                bat 'mvn -B -ntp package -DskipTests'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 echo "Building Docker image..."
@@ -94,33 +121,6 @@ pipeline {
                     docker push %DOCKER_IMAGE%:%COMMIT_ID%
                     """
                 }
-            }
-        }
-
-        stage('Performance Test (JMeter)') {
-            steps {
-                echo "Running JMeter performance test..."
-
-                bat '''
-                jmeter -n ^
-                -t test/performance-test.jmx ^
-                -l target/jmeter-results.jtl ^
-                -e ^
-                -o target/jmeter-report
-                '''
-            }
-
-            post {
-                always {
-                    archiveArtifacts artifacts: 'target/jmeter-report/**', allowEmptyArchive: true
-                }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo "Packaging Spring Boot application..."
-                bat 'mvn -B -ntp package -DskipTests'
             }
         }
 
