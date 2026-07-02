@@ -55,33 +55,6 @@ pipeline {
             }
         }
 
-        stage('Performance Test (JMeter)') {
-            steps {
-                echo "Running JMeter performance test..."
-
-                bat '''
-                jmeter -n ^
-                -t test/performance-test.jmx ^
-                -l target/jmeter-results.jtl ^
-                -e ^
-                -o target/jmeter-report
-                '''
-            }
-
-            post {
-                always {
-                    archiveArtifacts artifacts: 'target/jmeter-report/**', allowEmptyArchive: true
-                }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo "Packaging Spring Boot application..."
-                bat 'mvn -B -ntp package -DskipTests'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 echo "Building Docker image..."
@@ -124,23 +97,33 @@ pipeline {
             }
         }
 
-        // stage('Push Docker Image') {
-        //     steps {
-        //         withCredentials([usernamePassword(
-        //             credentialsId: 'dockerhub-creds',
-        //             usernameVariable: 'DOCKER_USER',
-        //             passwordVariable: 'DOCKER_PASS'
-        //         )]) {
+        stage('Performance Test (JMeter)') {
+            steps {
+                echo "Running JMeter performance test..."
 
-        //             bat """
-        //             echo Pushing Docker Image test
-        //             echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
-        //             docker push ${env.DOCKER_IMAGE}:latest
-        //             docker push ${env.DOCKER_IMAGE}:${env.COMMIT_ID}
-        //             """
-        //         }
-        //     }
-        // }
+                bat '''
+                jmeter -n ^
+                -t test/performance-test.jmx ^
+                -l target/jmeter-results.jtl ^
+                -e ^
+                -o target/jmeter-report
+                '''
+            }
+
+            post {
+                always {
+                    archiveArtifacts artifacts: 'target/jmeter-report/**', allowEmptyArchive: true
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Packaging Spring Boot application..."
+                bat 'mvn -B -ntp package -DskipTests'
+            }
+        }
+
     }
 
     post {
