@@ -117,6 +117,7 @@ pipeline {
                 )]) {
 
                     bat """
+                    echo Pushing Docker Image test
                     echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
                     docker push ${env.DOCKER_IMAGE}:latest
                     docker push ${env.DOCKER_IMAGE}:${env.COMMIT_ID}
