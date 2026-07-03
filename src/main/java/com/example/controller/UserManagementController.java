@@ -25,37 +25,46 @@ public class UserManagementController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/userList")
-    public String showUserList(@RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "email", required = false) String email,
-            @RequestParam(value = "role", required = false) Integer role,
-            @RequestParam(value = "page", defaultValue = "1") int currentPage,
+    public String showUserList(@ModelAttribute UserListFilter filter,
             Model model, Authentication authentication) {
-        UserViewModel user = userService.findUserByEmail(authentication.getName());
-        List<UserViewModel> userList;
-        if (name != null || email != null || role != null) {
-            userList = userService.findUsersByFilter(user.getSchool(), name, email, role);
-        } else {
-            userList = userService.findUsersBySchool(user.getSchool());
-        }
+        UserViewModel currentUser = findLoggedInUser(authentication);
+        List<UserViewModel> users = findUsers(currentUser.getSchool(), filter);
+        addUserListAttributes(model, currentUser, users, filter);
+        return "user/userList";
+    }
 
+    private List<UserViewModel> findUsers(String school, UserListFilter filter) {
+        if (filter.hasFilters()) {
+            return userService.findUsersByFilter(
+                    school, filter.getName(), filter.getEmail(), filter.getRole());
+        }
+        return userService.findUsersBySchool(school);
+    }
+
+    private void addUserListAttributes(Model model, UserViewModel currentUser,
+            List<UserViewModel> users, UserListFilter filter) {
+        int currentPage = filter.getPage();
         int pageSize = 10;
-        int totalItems = userList.size();
+        int totalItems = users.size();
         int totalPages = (int) Math.ceil((double) totalItems / pageSize);
         if (currentPage < 1) currentPage = 1;
         if (currentPage > totalPages) currentPage = totalPages > 0 ? totalPages : 1;
         int start = (currentPage - 1) * pageSize;
         int end = Math.min(start + pageSize, totalItems);
         List<UserViewModel> paginatedUserList = totalItems > 0
-                ? userList.subList(start, end) : new ArrayList<>();
+                ? users.subList(start, end) : new ArrayList<>();
 
         model.addAttribute("userList", paginatedUserList);
-        model.addAttribute("schoolName", user.getSchool());
-        model.addAttribute("filterName", name);
-        model.addAttribute("filterEmail", email);
-        model.addAttribute("filterRole", role);
+        model.addAttribute("schoolName", currentUser.getSchool());
+        model.addAttribute("filterName", filter.getName());
+        model.addAttribute("filterEmail", filter.getEmail());
+        model.addAttribute("filterRole", filter.getRole());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", totalPages);
-        return "user/userList";
+    }
+
+    private UserViewModel findLoggedInUser(Authentication authentication) {
+        return userService.findUserByEmail(authentication.getName());
     }
 
     @GetMapping("/createUser")
