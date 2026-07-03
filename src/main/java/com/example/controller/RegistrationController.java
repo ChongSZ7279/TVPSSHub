@@ -38,44 +38,56 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public String processRegisterForm(@ModelAttribute("client") UserViewModel client, Model model) {
-        if (client.getFullName() == null || client.getFullName().isEmpty()) {
-            model.addAttribute("error", "Full Name is required.");
-            return "user/register";
+        String error = validateRegistration(client);
+        if (error == null) {
+            error = findDuplicateError(client);
         }
-        if (client.getEmail() == null || client.getEmail().isEmpty()) {
-            model.addAttribute("error", "Email is required.");
-            return "user/register";
-        }
-        if (client.getPassword() == null || client.getPassword().length() < 6) {
-            model.addAttribute("error", "Password must be at least 6 characters.");
-            return "user/register";
-        }
-        if (!client.getPassword().equals(client.getCheckPassword())) {
-            model.addAttribute("error", "Password and Confirm Password must match.");
-            return "user/register";
+        if (error != null) {
+            return showError(model, error);
         }
 
-        UserViewModel existingUser = userService.findUserByEmail(client.getEmail());
-        if (existingUser != null) {
-            model.addAttribute("error", "Email already exists.");
-            return "user/register";
-        }
-
-        List<UserViewModel> usersWithIC = userService.findUsersByIC(client.getIdentityCardNumber());
-        if (!usersWithIC.isEmpty()) {
-            model.addAttribute("error", "Identity Card Number already exists.");
-            return "user/register";
-        }
-
-        client.setPassword(passwordEncoder.encode(client.getPassword()));
-        client.setRole(3);
+        prepareStudentAccount(client);
         try {
             userService.saveUser(client);
-        } catch (Exception exception) {
-            model.addAttribute("error", "An unexpected error occurred. Please try again.");
-            exception.printStackTrace();
-            return "user/register";
+        } catch (RuntimeException exception) {
+            return showError(model, "An unexpected error occurred. Please try again.");
         }
         return "redirect:/user/login?registered=true";
+    }
+
+    private String validateRegistration(UserViewModel client) {
+        if (client.getFullName() == null || client.getFullName().isEmpty()) {
+            return "Full Name is required.";
+        }
+        if (client.getEmail() == null || client.getEmail().isEmpty()) {
+            return "Email is required.";
+        }
+        if (client.getPassword() == null || client.getPassword().length() < 6) {
+            return "Password must be at least 6 characters.";
+        }
+        if (!client.getPassword().equals(client.getCheckPassword())) {
+            return "Password and Confirm Password must match.";
+        }
+        return null;
+    }
+
+    private String findDuplicateError(UserViewModel client) {
+        if (userService.findUserByEmail(client.getEmail()) != null) {
+            return "Email already exists.";
+        }
+        if (!userService.findUsersByIC(client.getIdentityCardNumber()).isEmpty()) {
+            return "Identity Card Number already exists.";
+        }
+        return null;
+    }
+
+    private void prepareStudentAccount(UserViewModel client) {
+        client.setPassword(passwordEncoder.encode(client.getPassword()));
+        client.setRole(3);
+    }
+
+    private String showError(Model model, String message) {
+        model.addAttribute("error", message);
+        return "user/register";
     }
 }
