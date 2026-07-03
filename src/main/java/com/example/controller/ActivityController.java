@@ -98,21 +98,7 @@ public class ActivityController {
         UserViewModel currentUser = userService.findUserByEmail(authentication.getName());
 
         if (existingActivity != null && existingActivity.getCreatorId() == currentUser.getId()) {
-            // Update activity fields
-            existingActivity.setTitle(updatedActivity.getTitle());
-            existingActivity.setOrganizer(updatedActivity.getOrganizer());
-            existingActivity.setStatus(updatedActivity.getStatus());
-            existingActivity.setDate(updatedActivity.getDate());
-            existingActivity.setVenue(updatedActivity.getVenue());
-            existingActivity.setDistrict(updatedActivity.getDistrict());
-            existingActivity.setTargetLanguage(updatedActivity.getTargetLanguage());
-            existingActivity.setCompetitionLevel(updatedActivity.getCompetitionLevel());
-            existingActivity.setProgramDuration(updatedActivity.getProgramDuration());
-            existingActivity.setDescription(updatedActivity.getDescription());
-            existingActivity.setParticipantsPrimary(updatedActivity.getParticipantsPrimary());
-            existingActivity.setParticipantsSecondary(updatedActivity.getParticipantsSecondary());
-            existingActivity.setParticipantsOpen(updatedActivity.getParticipantsOpen());
-
+            existingActivity.updateEditableFieldsFrom(updatedActivity);
             activityService.updateActivity(existingActivity);
             model.addAttribute("message", "Activity updated successfully.");
         }

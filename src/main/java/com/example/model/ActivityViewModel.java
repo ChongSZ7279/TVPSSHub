@@ -163,6 +163,23 @@ public class ActivityViewModel {
 	public void setParticipantsOpen(int participantsOpen) {
 		this.participantsOpen = participantsOpen;
 	}
+
+	public void updateEditableFieldsFrom(ActivityViewModel source) {
+		title = source.title;
+		organizer = source.organizer;
+		status = source.status;
+		date = source.date;
+		venue = source.venue;
+		district = source.district;
+		targetLanguage = source.targetLanguage;
+		competitionLevel = source.competitionLevel;
+		programDuration = source.programDuration;
+		description = source.description;
+		participantsPrimary = source.participantsPrimary;
+		participantsSecondary = source.participantsSecondary;
+		participantsOpen = source.participantsOpen;
+	}
+
 	@Override
 	public String toString() {
 		return "ActivityViewModel{" +
