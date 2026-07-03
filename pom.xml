@@ -57,11 +57,38 @@
 
   <build>
     <finalName>TVPSSHub</finalName>
+
     <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
+
+        <!-- Spring Boot Build Plugin -->
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+
+
+        <!-- Lint / Code Quality Check -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>3.3.0</version>
+
+          <executions>
+              <execution>
+                  <id>checkstyle-validation</id>
+                  <phase>verify</phase>
+                  <goals>
+                      <goal>check</goal>
+                  </goals>
+              </execution>
+          </executions>
+
+          <configuration>
+              <failOnViolation>false</failOnViolation>
+          </configuration>
+
       </plugin>
+
     </plugins>
-  </build>
+</build>
 </project>
