@@ -19,6 +19,9 @@ import java.util.List;
 @RequestMapping("/user")
 public class RegistrationController {
 
+    private static final String REGISTER_VIEW = "user/register";
+    private static final String ERROR_ATTRIBUTE = "error";
+
     @Autowired
     private UserService userService;
 
@@ -33,7 +36,7 @@ public class RegistrationController {
         List<School> schools = schoolService.getAllSchools();
         model.addAttribute("schools", schools);
         model.addAttribute("client", new UserViewModel());
-        return "user/register";
+        return REGISTER_VIEW;
     }
 
     @PostMapping("/register")
@@ -87,7 +90,7 @@ public class RegistrationController {
     }
 
     private String showError(Model model, String message) {
-        model.addAttribute("error", message);
-        return "user/register";
+        model.addAttribute(ERROR_ATTRIBUTE, message);
+        return REGISTER_VIEW;
     }
 }
