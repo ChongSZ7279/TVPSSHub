@@ -36,63 +36,6 @@ public class UserViewController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	// Show registration form
-	@GetMapping("/register")
-	public String showRegisterForm(Model model) {
-		List<School> schools = schoolService.getAllSchools();
-		model.addAttribute("schools", schools);
-		model.addAttribute("client", new UserViewModel());
-		return "user/register";
-	}
-
-	@PostMapping("/register")
-	public String processRegisterForm(@ModelAttribute("client") UserViewModel client, Model model) {
-		// Validation checks
-		if (client.getFullName() == null || client.getFullName().isEmpty()) {
-			model.addAttribute("error", "Full Name is required.");
-			return "user/register";
-		}
-		if (client.getEmail() == null || client.getEmail().isEmpty()) {
-			model.addAttribute("error", "Email is required.");
-			return "user/register";
-		}
-		if (client.getPassword() == null || client.getPassword().length() < 6) {
-			model.addAttribute("error", "Password must be at least 6 characters.");
-			return "user/register";
-		}
-		if (!client.getPassword().equals(client.getCheckPassword())) {
-			model.addAttribute("error", "Password and Confirm Password must match.");
-			return "user/register";
-		}
-
-		// Check if email exists
-		UserViewModel existingUser = userService.findUserByEmail(client.getEmail());
-		if (existingUser != null) {
-			model.addAttribute("error", "Email already exists.");
-			return "user/register";
-		}
-
-		// Check if identity card number (IC) exists
-		List<UserViewModel> usersWithIC = userService.findUsersByIC(client.getIdentityCardNumber());
-		if (!usersWithIC.isEmpty()) {
-			model.addAttribute("error", "Identity Card Number already exists.");
-			return "user/register";
-		}
-
-		// Save the user with encoded password
-		client.setPassword(passwordEncoder.encode(client.getPassword()));
-		client.setRole(3); // Default role as student
-		try {
-			userService.saveUser(client);
-		} catch (Exception e) {
-			model.addAttribute("error", "An unexpected error occurred. Please try again.");
-			e.printStackTrace();
-			return "user/register";
-		}
-
-		return "redirect:/user/login?registered=true";
-	}
-
 	// Show login form
 	@GetMapping("/login")
 	public String showLoginForm() {
