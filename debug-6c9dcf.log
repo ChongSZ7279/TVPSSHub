@@ -6,3 +6,7 @@
 {"sessionId":"6c9dcf","runId":"post-fix","hypothesisId":"H4","location":"HibernateConfig","message":"sessionFactory build success","data":{"detail":"ok"},"timestamp":1780235574824}
 {"sessionId":"6c9dcf","runId":"post-fix","hypothesisId":"H4","location":"HibernateConfig","message":"sessionFactory build start","data":{"detail":"pre"},"timestamp":1782372766998}
 {"sessionId":"6c9dcf","runId":"post-fix","hypothesisId":"H4","location":"HibernateConfig","message":"sessionFactory build success","data":{"detail":"ok"},"timestamp":1782372768417}
+{"sessionId":"6c9dcf","runId":"post-fix","hypothesisId":"H4","location":"HibernateConfig","message":"sessionFactory build start","data":{"detail":"pre"},"timestamp":1782399731279}
+{"sessionId":"6c9dcf","runId":"post-fix","hypothesisId":"H4","location":"HibernateConfig","message":"sessionFactory build success","data":{"detail":"ok"},"timestamp":1782399736250}
+{"sessionId":"6c9dcf","runId":"post-fix","hypothesisId":"H4","location":"HibernateConfig","message":"sessionFactory build start","data":{"detail":"pre"},"timestamp":1782400114952}
+{"sessionId":"6c9dcf","runId":"post-fix","hypothesisId":"H4","location":"HibernateConfig","message":"sessionFactory build success","data":{"detail":"ok"},"timestamp":1782400117456}

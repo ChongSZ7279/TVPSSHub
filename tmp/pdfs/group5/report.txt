@@ -1,0 +1,824 @@
+===== PAGE 1 =====
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                          SECJ4383-02 SOFTWARE CONSTRUCTION                         
+                                                                                    
+                              SEMESTER 2, SESSION 2025/2026                         
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                    Project 1 - Part B                              
+                                                                                    
+                    DESIGN OF CODE, CODE SMELLS, AND REFACTORING                    
+                                                                                    
+                           Lecturer : DR. MOHD ADHAM BIN ISA                        
+                                                                                    
+                                                                                    
+                                                                                    
+                                     Team: Group 5                                  
+                                                                                    
+                                     Group members:                                 
+                                                                                    
+                                                                                    
+                         CHONG SIEW ZHEN         A22EC0149                          
+                                                                                    
+                        IVLYN TAY WAN ROU        A22EC0168                          
+                                                                                    
+                                                                                    
+                            LEE XIN HUI          A22EC0066                          
+                                                                                    
+                            TAN YUN XI           A22EC0282                          
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+
+===== PAGE 2 =====
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+          Table of Content                                                          
+                                                                                    
+          1. Software Codebase                                            3         
+          2. Code Smells                                                  4         
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+
+===== PAGE 3 =====
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+           1.  Software Codebase                                                    
+               Software Codebase: TVPSSHub                                          
+                                                                                    
+               TVPSSHub is a web-based school management system developed to support the management of
+               TV Pusat Sumber Sekolah (TVPSS) activities, including programmes, schools, users, feedback,
+                                                                                    
+               and resource requests. The system provides role-based access for administrators, teachers, and
+               students, allowing each user to perform tasks according to their responsibilities. It was developed
+                                                                                    
+               using Java with the Spring Boot framework, Spring MVC, Thymeleaf, Hibernate, Spring
+               Security, and MySQL, following the Model-View-Controller (MVC) architecture. The project
+               contains well over 500 lines of code (excluding comments and blank lines) and serves as the
+                                                                                    
+               codebase for analysing code smells and applying refactoring techniques in this report.
+                                                                                    
+                                                                                    
+               Source code: https://github.com/ChongSZ7279/TVPSSHub/tree/code-smells
+               Type: Self-developed academic project                                
+                                                                                    
+               Evidence for Lines of Code (LOC): VS Code Counter                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+
+===== PAGE 4 =====
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+           2.  Code Smells (Highlight的是manual找到but sonarqube沒有detect到的）             
+                                                                                    
+                No  Code Smell    Location         Description                      
+                                                                                    
+                1   God Class / Large UserViewController.java, Handles too many user-related
+                    Class         Lines 20-353     features in one class such as    
+                                                   registration, login/dashboard, profile
+                                                   updates, user CRUD, password     
+                                                   encoding, school lookup, activity
+                                                   lookup, and resource lookup.     
+                2   Duplicate Code ActivityController.java, Pagination logic is repeated in two
+                                  Lines 151-170    controllers.                     
+                                  UserViewController.java,                          
+                                  Lines 209-234                                     
+                                                                                    
+                3   Long  Parameter ActivityController.java, Method addFeedback() takes 5
+                    List          Lines 189-194    parameters:      activityId,     
+                                                   feedbackText, rating, authentication,
+                                                   and date.                        
+                                                                                    
+                4   Dead Code     UserViewController.java, Unused imports are present.
+                                  Lines 13-14                                       
+                                                                                    
+                5   Duplicate Code UserViewController.java, Same string literals “user/register”
+                                  Lines 45, 53, 57, 61, 65, are repeated many times.
+                                  72, 79, 90                                        
+                                                                                    
+               Evidence                                                             
+                                                                                    
+               Refer Appendix A                                                     
+                                                                                    
+                                                                                    
+           3.  Code Smell Detection Methods                                         
+                                                                                    
+               Tool Used: SonarQube for IDE (VS Code Extension)                     
+                                                                                    
+                Code Smell         Manual Detection    Automated Detection          
+                                                                                    
+                Dead Code          I reviewed the import SonarQube for IDE detected 
+                                   statements in       the same issue using Rule    
+                                   UserViewController.java and java:S1128, recommending
+                                   found that HttpSession and the removal of the unused
+                                   LocalDate were never used imports.               
+                                   in the class. These unused                       
+                                   imports were classified as                       
+                                   Dead Code because they do                        
+                                   not contribute to the                            
+                                   program's functionality.                         
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+
+===== PAGE 5 =====
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                Duplicate Code     I reviewed          SonarQube for IDE detected   
+                                   UserViewController.java and this issue using Rule
+                                   found that the string literal java:S1192, reporting that
+                                   “user/register” was repeated "user/register" is duplicated 8
+                                   in several methods instead of times and recommending that
+                                   using a constant. This was it be replaced with a constant.
+                                   classified as Duplicate Code                     
+                                   because the same value is                        
+                                   duplicated throughout the                        
+                                   class.                                           
+                                                                                    
+                                                                                    
+               Evidence for Automated Detection                                     
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+           4.  Refactoring Methods                                                  
+                                                                                    
+                Refactoring Technique Description      Why Appropriate              
+                Remove Dead Code   Remove unused imports or Used for HttpSession and
+                                   code.               LocalDate because they are   
+                                                       not      used     in         
+                                                       UserViewController.java.     
+                                                       Improves code cleanliness.   
+                                                                                    
+                Consolidate Duplicate Code Replace repeated values with Used for "user/register"
+                                   a constant or shared code. which is repeated 8 times.
+                                                       Reduces duplication and      
+                                                       improves maintainability.    
+                                                                                    
+                                                                                    
+           5.  Applying Refactoring                                                 
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+
+===== PAGE 6 =====
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+               Appendix A Evidence for Each Code Smells                             
+                 1. God Class / Large Class                                         
+                    UserViewController.java                                         
+                                                                                    
+               @Controller                                                          
+               @RequestMapping("/user")                                             
+               public class UserViewController {                                    
+                 @Autowired                                                         
+                 private UserService userService;                                   
+                 @Autowired                                                         
+                 private ActivityService activityService;                           
+                 @Autowired                                                         
+                 private SchoolService schoolService;                               
+                 @Autowired                                                         
+                 private ResourceService resourceService;                           
+                 @Autowired                                                         
+                 private PasswordEncoder passwordEncoder;                           
+                                                                                    
+                 // Show registration form                                          
+                 @GetMapping("/register")                                           
+                 public String showRegisterForm(Model model) {                      
+                   List<School> schools = schoolService.getAllSchools();            
+                   model.addAttribute("schools", schools);                          
+                   model.addAttribute("client", new UserViewModel());               
+                   return "user/register";                                          
+                 }                                                                  
+                 @PostMapping("/register")                                          
+                 public String processRegisterForm(@ModelAttribute("client") UserViewModel client, Model model) {
+                   // Validation checks                                             
+                   if (client.getFullName() == null || client.getFullName().isEmpty()) {
+                     model.addAttribute("error", "Full Name is required.");         
+                     return "user/register";                                        
+                   }                                                                
+                   if (client.getEmail() == null || client.getEmail().isEmpty()) {  
+                     model.addAttribute("error", "Email is required.");             
+                     return "user/register";                                        
+                   }                                                                
+                   if (client.getPassword() == null || client.getPassword().length() < 6) {
+                     model.addAttribute("error", "Password must be at least 6 characters.");
+
+===== PAGE 7 =====
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                     return "user/register";                                        
+                   }                                                                
+                   if (!client.getPassword().equals(client.getCheckPassword())) {   
+                     model.addAttribute("error", "Password and Confirm Password must match.");
+                     return "user/register";                                        
+                   }                                                                
+                   // Check if email exists                                         
+                   UserViewModel existingUser = userService.findUserByEmail(client.getEmail());
+                   if (existingUser != null) {                                      
+                     model.addAttribute("error", "Email already exists.");          
+                     return "user/register";                                        
+                   }                                                                
+                   // Check if identity card number (IC) exists                     
+                   List<UserViewModel> usersWithIC = userService.findUsersByIC(client.getIdentityCardNumber());
+                   if (!usersWithIC.isEmpty()) {                                    
+                     model.addAttribute("error", "Identity Card Number already exists.");
+                     return "user/register";                                        
+                   }                                                                
+                   // Save the user with encoded password                           
+                   client.setPassword(passwordEncoder.encode(client.getPassword()));
+                   client.setRole(3); // Default role as student                    
+                   try {                                                            
+                     userService.saveUser(client);                                  
+                   } catch (Exception e) {                                          
+                     model.addAttribute("error", "An unexpected error occurred. Please try again.");
+                     e.printStackTrace();                                           
+                     return "user/register";                                        
+                   }                                                                
+                   return "redirect:/user/login?registered=true";                   
+                 }                                                                  
+                 // Show login form                                                 
+                 @GetMapping("/login")                                              
+                 public String showLoginForm() {                                    
+                   return "user/login";                                             
+                 }                                                                  
+                 @GetMapping("/dashboard")                                          
+                 public String showDashboard(Model model, Authentication authentication) {
+                   try {                                                            
+                     // Add debug logging                                           
+                     System.out.println("Authentication object: " + authentication);
+                     System.out.println("Authentication name: " + authentication.getName());
+                     System.out.println("Authentication authorities: " + authentication.getAuthorities());
+                     UserViewModel user = userService.findUserByEmail(authentication.getName());
+                     if (user == null) {                                            
+                       System.out.println("User not found in database");            
+                       return "redirect:/user/login";                               
+                     }                                                              
+                     System.out.println("Found user: " + user.getEmail() + " with role: " + user.getRole());
+                     // Load all required data                                      
+                     List<ActivityViewModel> programs = activityService.getAllActivities();
+                     List<School> schools = schoolService.getAllSchools();          
+                     List<Resource> resources = resourceService.getAllResources();  
+                     // Add to model                                                
+                     model.addAttribute("client", user);                            
+                     model.addAttribute("programs", programs);                      
+                     model.addAttribute("schools", schools);                        
+                     model.addAttribute("resources", resources);                    
+                     return "user/dashboard";                                       
+                   } catch (Exception e) {                                          
+
+===== PAGE 8 =====
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                     System.out.println("Error in dashboard: " + e.getMessage());   
+                     e.printStackTrace();                                           
+                     return "redirect:/user/login?error=true";                      
+                   }                                                                
+                 }                                                                  
+                 // Show profile                                                    
+                 @GetMapping("/profile")                                            
+                 public String showProfile(Model model, Authentication authentication) {
+                   UserViewModel user = userService.findUserByEmail(authentication.getName());
+                   if (user == null) {                                              
+                     model.addAttribute("error", "You must log in to view the profile.");
+                     return "redirect:/user/login";                                 
+                   }                                                                
+                   model.addAttribute("client", user);                              
+                   return "user/profile";                                           
+                 }                                                                  
+                 @GetMapping("/updateProfile")                                      
+                 public String showUpdateProfile(Model model, Authentication authentication) {
+                   UserViewModel user = userService.findUserByEmail(authentication.getName());
+                   if (user == null) {                                              
+                     return "redirect:/user/login";                                 
+                   }                                                                
+                   List<School> schoolList = schoolService.getAllSchools(); // Retrieve school list from DB
+                   model.addAttribute("client", user);                              
+                   model.addAttribute("schools", schoolList); // Pass school list to the view
+                   return "user/updateProfile";                                     
+                 }                                                                  
+                 @PostMapping("/updateProfile")                                     
+                 public String updateProfile(@ModelAttribute("client") UserViewModel updatedClient, Authentication authentication,
+                     Model model) {                                                 
+                   UserViewModel loggedInUser = userService.findUserByEmail(authentication.getName());
+                   if (loggedInUser == null) {                                      
+                     model.addAttribute("error", "You must log in to update your profile.");
+                     return "redirect:/user/login";                                 
+                   }                                                                
+                   // Update the logged-in user's details                           
+                   loggedInUser.setFullName(updatedClient.getFullName());           
+                   loggedInUser.setEmail(updatedClient.getEmail());                 
+                   loggedInUser.setSchool(updatedClient.getSchool());               
+                   loggedInUser.setIdentityCardNumber(updatedClient.getIdentityCardNumber());
+                   String newPassword = updatedClient.getPassword();                
+                   if (newPassword != null && !newPassword.isEmpty()) {             
+                     loggedInUser.setPassword(newPassword);                         
+                   }                                                                
+                   // Save updated user details to the database                     
+                   userService.updateUser(loggedInUser);                            
+                   // Redirect to profile page with a success message               
+                   return "redirect:/user/profile?message=Profile+updated+successfully";
+                 }                                                                  
+                 // Show user list                                                  
+                 @PreAuthorize("hasRole('ROLE_2')")                                 
+                 @GetMapping("/userList")                                           
+                 public String showUserList(@RequestParam(value = "name", required = false) String name,
+                     @RequestParam(value = "email", required = false) String email, 
+                     @RequestParam(value = "role", required = false) Integer role,  
+                     @RequestParam(value = "page", defaultValue = "1") int currentPage,
+                     Model model, Authentication authentication) {                  
+                   // Get the current user's school                                 
+                   UserViewModel user = userService.findUserByEmail(authentication.getName());
+
+===== PAGE 9 =====
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                   // Apply filters based on user input                             
+                   List<UserViewModel> userList;                                    
+                   if (name != null || email != null || role != null) {             
+                     userList = userService.findUsersByFilter(user.getSchool(), name, email, role);
+                   } else {                                                         
+                     userList = userService.findUsersBySchool(user.getSchool());    
+                   }                                                                
+                   // Pagination logic                                              
+                   int pageSize = 10; // Number of users per page                   
+                   int totalItems = userList.size();                                
+                   int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+                   // Validate current page                                         
+                   if (currentPage < 1)                                             
+                     currentPage = 1;                                               
+                   if (currentPage > totalPages)                                    
+                     currentPage = totalPages > 0 ? totalPages : 1;                 
+                   // Calculate the start and end indices for pagination            
+                   int start = (currentPage - 1) * pageSize;                        
+                   int end = Math.min(start + pageSize, totalItems);                
+                   // Ensure the list isn't empty before sublisting                 
+                   List<UserViewModel> paginatedUserList = totalItems > 0 ? userList.subList(start, end) : new ArrayList<>();
+                   // Add attributes to the model for view rendering                
+                   model.addAttribute("userList", paginatedUserList);               
+                   model.addAttribute("schoolName", user.getSchool());              
+                   model.addAttribute("filterName", name);                          
+                   model.addAttribute("filterEmail", email);                        
+                   model.addAttribute("filterRole", role);                          
+                   model.addAttribute("currentPage", currentPage);                  
+                   model.addAttribute("totalPages", totalPages);                    
+                   return "user/userList";                                          
+                 }                                                                  
+                 @PreAuthorize("hasRole('ROLE_2')")                                 
+                 @GetMapping("/createUser")                                         
+                 public String showCreateUser(Model model, Authentication authentication) {
+                   UserViewModel teacher = userService.findUserByEmail(authentication.getName());
+                   UserViewModel newUser = new UserViewModel();                     
+                   newUser.setSchool(teacher.getSchool());                          
+                   model.addAttribute("client", newUser);                           
+                   return "user/createUser";                                        
+                 }                                                                  
+                 @PreAuthorize("hasRole('ROLE_2')")                                 
+                 @PostMapping("/createUser")                                        
+                 public String processCreateUser(@ModelAttribute("client") UserViewModel client, Model model,
+                     Authentication authentication) {                               
+                   UserViewModel teacher = userService.findUserByEmail(authentication.getName());
+                   // Validate school matches teacher's school                      
+                   if (!client.getSchool().equals(teacher.getSchool())) {           
+                     model.addAttribute("error", "The user's school must match your school.");
+                     return "user/createUser";                                      
+                   }                                                                
+                   // Check if email exists                                         
+                   if (userService.findUserByEmail(client.getEmail()) != null) {    
+                     model.addAttribute("error", "Email already exists.");          
+                     return "user/createUser";                                      
+                   }                                                                
+                   // Save new user                                                 
+                   client.setPassword(passwordEncoder.encode(client.getPassword()));
+                   client.setRole(3); // Default role as student                    
+                   userService.saveUser(client);                                    
+
+===== PAGE 10 =====
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                   return "redirect:/user/userList";                                
+                 }                                                                  
+                 // Show edit user form                                             
+                 @PreAuthorize("hasRole('ROLE_2')")                                 
+                 @GetMapping("/editUser/{id}")                                      
+                 public String showEditUser(@PathVariable("id") Long id, Model model, Authentication authentication) {
+                   // Get logged-in user using Authentication object                
+                   String email = authentication.getName();                         
+                   UserViewModel loggedInClient = userService.findUserByEmail(email);
+                   // Fetch the user by id                                          
+                   UserViewModel user = userService.findUserById(id);               
+                   if (user != null) {                                              
+                     // Ensure the user is part of the same school as the logged-in user
+                     if (!user.getSchool().equals(loggedInClient.getSchool())) {    
+                       model.addAttribute("error", "You are not authorized to edit this user.");
+                       return "redirect:/user/userList";                            
+                     }                                                              
+                     model.addAttribute("user", user);                              
+                   } else {                                                         
+                     model.addAttribute("error", "User not found.");                
+                     return "redirect:/user/userList";                              
+                   }                                                                
+                   return "user/editUser"; // JSP page for displaying the user edit form
+                 }                                                                  
+                 @PreAuthorize("hasRole('ROLE_2')")                                 
+                 @PostMapping("/editUser/{id}")                                     
+                 public String updateUser(@PathVariable("id") Long id, @ModelAttribute("user") UserViewModel updatedUser,
+                     Authentication authentication, Model model) {                  
+                   // Get logged-in user using Authentication object                
+                   String email = authentication.getName();                         
+                   UserViewModel loggedInClient = userService.findUserByEmail(email);
+                   // Ensure the updated school matches the logged-in user's school 
+                   updatedUser.setSchool(loggedInClient.getSchool());               
+                   // Save the user                                                 
+                   userService.updateUser(updatedUser);                             
+                   return "redirect:/user/userList"; // Redirect back to the user list page after update
+                 }                                                                  
+                 // Delete user by ID                                               
+                 @PreAuthorize("hasRole('ROLE_2')")                                 
+                 @GetMapping("/deleteUser/{id}")                                    
+                 public String deleteUser(@PathVariable("id") Long id, Authentication authentication, Model model) {
+                   // Get logged-in user using Authentication object                
+                   String email = authentication.getName();                         
+                   UserViewModel loggedInClient = userService.findUserByEmail(email);
+                   // Check if the user exists                                      
+                   UserViewModel user = userService.findUserById(id);               
+                   if (user == null) {                                              
+                     model.addAttribute("error", "User not found.");                
+                     return "redirect:/user/userList";                              
+                   }                                                                
+                   // Ensure the user belongs to the same school as the logged-in user
+                   if (!user.getSchool().equals(loggedInClient.getSchool())) {      
+                     model.addAttribute("error", "You are not authorized to delete this user.");
+                     return "redirect:/user/userList";                              
+                   }                                                                
+                   // Delete the user                                               
+                   userService.deleteUserById(id);                                  
+
+===== PAGE 11 =====
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                   // Redirect to user list with success message                    
+                   model.addAttribute("success", "User deleted successfully.");     
+                   return "redirect:/user/userList";                                
+                 }                                                                  
+                 // Logout function                                                 
+                 @GetMapping("/logout")                                             
+                 public String logout() {                                           
+                   // Spring Security handles the actual logout                     
+                   return "redirect:/user/login";                                   
+                 }                                                                  
+               }                                                                    
+                 2. Duplicate Code                                                  
+                    ActivityController.java                                         
+                        int pageSize = 10; // Items per page                        
+                        int totalItems = feedbackList.size();                       
+                        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+                        if (currentPage < 1)                                        
+                          currentPage = 1;                                          
+                        if (currentPage > totalPages)                               
+                          currentPage = totalPages;                                 
+                        int start = (currentPage - 1) * pageSize;                   
+                        int end = Math.min(start + pageSize, totalItems);           
+                        // Paginate feedback                                        
+                        List<Feedback> paginatedFeedback = feedbackList.subList(start, end);
+                        // Add attributes to the model for pagination               
+                        model.addAttribute("feedbackList", paginatedFeedback);      
+                        model.addAttribute("currentPage", currentPage);             
+                        model.addAttribute("totalPages", totalPages);               
+                        model.addAttribute("activityId", activityId); // Pass activityId for pagination links
+                    UserViewController.java                                         
+                        // Pagination logic                                         
+                        int pageSize = 10; // Number of users per page              
+                        int totalItems = userList.size();                           
+                        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+                        // Validate current page                                    
+                        if (currentPage < 1)                                        
+                          currentPage = 1;                                          
+                        if (currentPage > totalPages)                               
+                          currentPage = totalPages > 0 ? totalPages : 1;            
+                        // Calculate the start and end indices for pagination       
+                        int start = (currentPage - 1) * pageSize;                   
+                        int end = Math.min(start + pageSize, totalItems);           
+                        // Ensure the list isn't empty before sublisting            
+                          List<UserViewModel> paginatedUserList = totalItems > 0 ? userList.subList(start, end) : new
+                    ArrayList<>();                                                  
+                        // Add attributes to the model for view rendering           
+                        model.addAttribute("userList", paginatedUserList);          
+                        model.addAttribute("schoolName", user.getSchool());         
+                        model.addAttribute("filterName", name);                     
+                        model.addAttribute("filterEmail", email);                   
+                        model.addAttribute("filterRole", role);                     
+                        model.addAttribute("currentPage", currentPage);             
+                        model.addAttribute("totalPages", totalPages);               
+                                                                                    
+
+===== PAGE 12 =====
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                 3. Long Parameter List                                             
+                    ActivityController.java                                         
+                      @PostMapping("/addFeedback")                                  
+                      public String addFeedback(@RequestParam("activityId") int activityId,
+                          @RequestParam("feedbackText") String feedbackText,        
+                          @RequestParam(value = "rating", required = false) Integer rating,
+                          Authentication authentication,                            
+                          @RequestParam("date") String date) {                      
+                 4. Dead Code                                                       
+                    UserViewController.java                                         
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                 5. Duplicate Code                                                  
+                    UserViewController.java                                         
+                                                                                    
+                    Line 45                                                         
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                    Line 53, 57, 61, 65                                             
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+
+===== PAGE 13 =====
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                    Line 72, 79, 90                                                 
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    

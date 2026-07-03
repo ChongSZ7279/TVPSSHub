@@ -1,0 +1,256 @@
+/* General Styles */
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+	background-color: #f6f8fc;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+/* Container Styles */
+.login-page {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
+.login-container {
+	background-color: white;
+	width: 90%;
+	max-width: 900px;
+	min-height: 500px;
+	display: flex;
+	box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+	border-radius: 12px;
+	overflow: hidden;
+	flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
+}
+
+/* Logo Section */
+.logo-section {
+	flex: 1;
+	text-align: center;
+	padding: 40px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+}
+
+.logo-section .logo {
+	max-width: 150px;
+	margin-bottom: 20px;
+}
+
+.logo-section h2 {
+	font-size: 1.5rem;
+	color: #333;
+	margin: 0;
+	margin-bottom: 10px;
+}
+
+.logo-section h3 {
+	font-size: 1.2rem;
+	color: #4318FF;
+	margin: 0;
+}
+
+/* Divider */
+.divider {
+	width: 1px;
+	background-color: #ddd;
+}
+
+/* Login Form Section */
+.login-form {
+	flex: 1;
+	padding: 40px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+	box-sizing: border-box; /* Prevent overflow issues */
+}
+
+.login-form h2 {
+	font-size: 1.5rem;
+	color: #333;
+	margin-bottom: 20px;
+}
+
+.login-form form {
+	width: 100%;
+	max-width: 400px; /* Set a uniform max width */
+	display: flex;
+	flex-direction: column;
+	align-items: left;
+}
+
+.login-form input,
+.login-form select,
+.login-form button {
+	width: 100%; /* Make inputs and buttons the same width */
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	font-size: 1rem;
+	box-sizing: border-box;
+}
+
+.login-form input {
+	background-color: #f6f8fc;
+}
+
+.login-form select {
+	background-color: #f6f8fc;
+	color: #333;
+	appearance: none; /* Removes default dropdown arrow for consistency */
+}
+
+.login-form select:focus {
+	outline: none;
+	border-color: #4318FF;
+	background-color: #ffffff;
+}
+
+.login-form button {
+	background-color: #4318FF;
+	color: white;
+	border: none;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+	background-color: #332ba8;
+}
+
+.login-form p {
+	font-size: 0.9rem;
+	color: #666;
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+label {
+	font-size: 1rem;
+	color: #666;
+	margin-bottom: 5px;
+	display: block;
+}
+
+/* Dropdown List Styling */
+.dropdown-options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    background-color: #fff;
+    display: none;
+    z-index: 9999;
+    width: 23rem; /* Matches input width */
+    box-sizing: border-box;
+}
+
+
+/* Individual List Items */
+.dropdown-options li {
+    padding: 10px;
+    font-size: 1rem;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Hover effect for list items */
+.dropdown-options li:hover {
+    background-color: #4318FF;
+    color: white;
+}
+
+/* Focus state for dropdown list items */
+.dropdown-options li:focus {
+    outline: none;
+    background-color: #4318FF;
+    color: white;
+}
+
+/* Hide dropdown when no schools match */
+.dropdown-options li.no-match {
+    color: #aaa;
+    font-style: italic;
+}
+
+
+/* General input styles */
+input[type="date"] {
+	background-color: #f6f8fc;
+	position: relative;
+}
+
+/* Error Messages */
+.login-form .error-message p{
+    color: #ff0000;
+    font-weight: bold; /* Optional, for emphasis */
+}
+
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+	.login-container {
+		flex-direction: column; /* Stack sections vertically */
+		padding: 20px;
+		height: auto;
+	}
+
+	.logo-section,
+	.login-form {
+		width: 100%; /* Full width for each section */
+		padding: 20px;
+	}
+
+	.login-form form {
+		max-width: 100%; /* Use full width */
+	}
+
+	.login-form input,
+	.login-form select,
+	.login-form button {
+		font-size: 0.9rem; /* Smaller font sizes for smaller screens */
+		padding: 10px;
+	}
+}
+
+@media (max-width: 680px) {
+	.login-container {
+		padding: 10px; /* Reduce padding for mobile */
+	}
+
+	.logo-section,
+	.login-form {
+		padding: 10px; /* Reduce section padding */
+	}
+
+	.logo-section h2,
+	.logo-section h3,
+	.login-form h2 {
+		font-size: 1rem; /* Further reduce font size */
+	}
+
+	.login-form input,
+	.login-form select,
+	.login-form button {
+		font-size: 0.8rem;
+		padding: 8px;
+	}
+}

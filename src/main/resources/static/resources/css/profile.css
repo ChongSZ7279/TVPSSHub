@@ -1,0 +1,207 @@
+/* Profile Container */
+.profile-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Profile Header */
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-header img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 3px solid #007BFF;
+    margin-bottom: 10px;
+}
+
+.profile-header h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+/* Profile Information */
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Profile Info Container */
+.profile-info-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Profile Info Item */
+.info-item {
+    font-size: 16px;
+    text-align: left;
+}
+
+.info-item div {
+    background-color: #EFF4FB;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    height: 20px;
+}
+
+.info-item label {
+    font-weight: bold;
+}
+
+/* Profile Form Container */
+.profile-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Profile Form Input Fields */
+.profile-info-container .input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.input-group label {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    background-color: #f9f9f9;
+    transition: border 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: #007BFF;
+    background-color: #ffffff;
+}
+
+/* Disabled Input Fields */
+input[readonly] {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+/* Back Button */
+.back-link {
+    font-size: 18px;
+    color: #007BFF;
+    text-decoration: none;
+    margin-bottom: 15px;
+    display: inline-block;
+}
+
+.back-link i {
+    margin-right: 8px;
+}
+
+
+/* Dropdown List Styling */
+.dropdown-options {
+    list-style: none;
+    margin: 5rem 0;
+    padding: 0;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    background-color: #fff;
+    display: none;
+    z-index: 9999;
+    width: 50%; /* Matches input width */
+    box-sizing: border-box;
+}
+
+
+/* Individual List Items */
+.dropdown-options li {
+    padding: 10px;
+    font-size: 1rem;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Hover effect for list items */
+.dropdown-options li:hover {
+    background-color: #4318FF;
+    color: white;
+}
+
+/* Focus state for dropdown list items */
+.dropdown-options li:focus {
+    outline: none;
+    background-color: #4318FF;
+    color: white;
+}
+
+/* Hide dropdown when no schools match */
+.dropdown-options li.no-match {
+    color: #aaa;
+    font-style: italic;
+}
+
+
+/* Responsive Layouts */
+
+/* For small screens (mobile devices) */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 20px;
+    }
+
+    .profile-header img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-info-container {
+        grid-template-columns: 1fr; /* Stack input fields vertically */
+        gap: 15px;
+    }
+
+}
+
+/* For very small screens (portrait mobile) */
+@media (max-width: 480px) {
+    .profile-header h2 {
+        font-size: 20px;
+    }
+
+    .input-group input {
+        font-size: 14px; /* Smaller font size for inputs */
+    }
+
+}

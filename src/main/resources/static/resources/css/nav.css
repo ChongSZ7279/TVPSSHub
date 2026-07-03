@@ -1,0 +1,154 @@
+/* General Body Styling */
+body {
+	margin: 0;
+	font-family: 'Arial', sans-serif;
+	background-color: #f9f9f9;
+	display: flex;
+}
+
+/* Sidebar Styling */
+.sidebar {
+	width: 250px;
+	height: 100vh;
+	background-color: #fff;
+	box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	transition: transform 0.3s ease;
+	z-index: 999;
+}
+
+.sidebar-header {
+	text-align: center;
+	margin: 20px 0;
+}
+
+.sidebar-header img {
+	width: 80px;
+	margin-bottom: 10px;
+}
+
+.sidebar-header h1 {
+	font-size: 20px;
+	color: #333;
+	margin: 0;
+}
+
+.sidebar-header .highlight {
+	color: #3c50e0;
+	font-weight: bold;
+}
+
+.menu {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+}
+
+.menu li {
+	width: 100%;
+}
+
+.menu li a {
+	text-decoration: none;
+	color: #999;
+	font-size: 16px;
+	display: flex;
+	align-items: center;
+	padding: 15px 20px;
+	transition: all 0.3s ease;
+}
+
+.menu li a.active, .menu li a:hover {
+	color: #3c50e0;
+	background-color: #f0f4ff;
+}
+
+.menu li a i {
+	margin-right: 10px;
+}
+
+.logout {
+	margin-top: auto;
+	padding-bottom: 20px;
+}
+
+.logout a {
+	text-decoration: none;
+	color: #999;
+	font-size: 16px;
+	display: flex;
+	align-items: center;
+	transition: all 0.3s ease;
+}
+
+.logout a:hover {
+	color: #e03c3c;
+}
+
+
+/* Responsive Design */
+/* Hide menu toggle button on large screens */
+@media ( min-width : 769px) {
+	.sidebar-toggle {
+		display: none;
+	}
+	.sidebar {
+		transform: translateX(0) !important;
+	}
+}
+
+@media ( max-width : 768px) {
+	/* Sidebar Toggle Button */
+	.sidebar-toggle {
+		display: block;
+		background-color: #3c50e0;
+		border: none;
+		color: #fff;
+		font-size: 20px;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		cursor: pointer;
+		position: fixed;
+		top: 15px;
+		left: 15px;
+		z-index: 1000;
+		transition: background-color 0.3s ease, transform 0.3s ease;
+		transform: rotate(0deg); /* Initial rotation */
+	}
+
+	/* Hover Effect for Toggle */
+	.sidebar-toggle:hover {
+		background-color: #2a3dbd;
+	}
+
+	/* Add a toggled state for rotation */
+	.sidebar-toggle.toggled {
+		transform: rotate(90deg); /* Rotate only when toggled */
+	}
+
+	/* Focus State for Accessibility */
+	.sidebar-toggle:focus {
+		outline: 2px solid #fff;
+		outline-offset: 2px;
+	}
+
+	/* Sidebar Toggle Icon */
+	.sidebar-toggle i {
+		margin: 0;
+		line-height: 40px;
+	}
+	.sidebar {
+		transform: translateX(-100%);
+		position: absolute;
+	}
+	.sidebar.open {
+		transform: translateX(0);
+	}
+	
+}
